@@ -1,0 +1,25 @@
+<div class="dashboard-drawer-container">
+  <div class="recipe-books-container">
+    <div class="create-book-container">
+      <button mat-stroked-button color="primary">Create a Recipe Book</button>
+    </div>
+    <div class="recipe-books-list">
+      <mat-selection-list dense #books (selectionChange)="handleSelectionChange()" [multiple]="false">
+        <mat-list-option [value]="undefined">
+          View All Recipes
+        </mat-list-option>
+        <hr/>
+        <ng-container *ngIf="recipeBooks.length === 0">
+          <div class="no-recipe-books" *ngIf="recipeBooks.length === 0">
+            You don't have any recipe books!
+          </div>
+        </ng-container>
+        <ng-container *ngIf="recipeBooks.length > 0">
+          <mat-list-option *ngFor="let book of recipeBooks" [value]="book">
+            {{ book.name }}
+          </mat-list-option>
+        </ng-container>
+      </mat-selection-list>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="rcp-login-form">
+  <h1>Create Account</h1>
+  <form>
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input type="email" required name="username" [(ngModel)]="username" matInput/>
+    </mat-form-field>
+    <br/>
+    <mat-form-field appearance="fill">
+      <mat-label>Confirm Email</mat-label>
+      <input type="email" required name="username-conf" [(ngModel)]="confirmUsername" matInput/>
+    </mat-form-field>
+    <br/>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input type="password" name="password" [(ngModel)]="password" matInput/>
+    </mat-form-field>
+    <br/>
+    <mat-form-field appearance="fill">
+      <mat-label>Confirm Password</mat-label>
+      <input type="password" name="password-conf" [(ngModel)]="confirmPassword" matInput/>
+    </mat-form-field>
+    <br/>
+    <div class="remember-container">
+      <mat-checkbox name="remember" [(ngModel)]="rememberMe">Remember Me</mat-checkbox>
+    </div>
+
+    <div class="button-container">
+      <button
+        [disabled]="!valid"
+        color="primary"
+        mat-raised-button
+        (click)="createAccount()">
+        Create Account
+      </button>
+      <button mat-button color="accent" routerLink="/login">I already have an account</button>
+    </div>
+  </form>
+</div>

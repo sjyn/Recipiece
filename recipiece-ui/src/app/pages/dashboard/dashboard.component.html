@@ -1,0 +1,15 @@
+<mat-drawer-container class="example-container">
+  <mat-drawer mode="side" [opened]="uiGlobals.drawerOpen">
+    <app-dashboard-drawer></app-dashboard-drawer>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="drawer-content-container">
+      <ng-container *ngIf="!!dashboardState.selectedBook">
+        <app-view-recipe-book [recipeBook]="dashboardState.selectedBook"></app-view-recipe-book>
+      </ng-container>
+      <ng-container *ngIf="dashboardState.selectedBook === undefined">
+        <app-view-all-recipes></app-view-all-recipes>
+      </ng-container>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

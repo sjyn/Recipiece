@@ -1,0 +1,29 @@
+<div class="rcp-login-form">
+  <h1>Login</h1>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input type="email" name="username" [(ngModel)]="username" matInput/>
+    </mat-form-field>
+    <br/>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input type="password" name="password" [(ngModel)]="password" matInput/>
+    </mat-form-field>
+    <br/>
+    <div class="remember-container">
+      <mat-checkbox [checked]="rememberMe">Remember Me</mat-checkbox>
+    </div>
+
+    <div class="button-container">
+      <button
+        [disabled]="!valid"
+        color="primary"
+        mat-raised-button
+        (click)="loginUser()">
+        Login
+      </button>
+      <button mat-button color="accent" routerLink="/create">I don't have an account</button>
+    </div>
+  </div>
+</div>

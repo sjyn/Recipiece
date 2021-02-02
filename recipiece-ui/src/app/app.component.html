@@ -1,0 +1,22 @@
+<div class="app-wrapper">
+  <mat-toolbar>
+    <button mat-icon-button *ngIf="uiGlobals.showDrawer" (click)="toggleDrawer()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span
+      (click)="maybeGoHome()"
+      [ngClass]="{'clickable': storage.loggedIn}">
+      Recipiece
+    </span>
+  </mat-toolbar>
+  <div class="route-wrapper">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="action-container" *ngIf="uiGlobals.showActions">
+    <mat-fab-menu
+      (onFabMenuItemSelected)="actionSelected($event)"
+      icon="expand_less"
+      [fabButtons]="actions">
+    </mat-fab-menu>
+  </div>
+</div>

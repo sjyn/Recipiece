@@ -1,0 +1,5 @@
+PyMySQL==1.0.2
+Flask
+pycryptodome==3.9.9
+bcrypt==3.2.0
+flask-cors==3.0.10

@@ -1,0 +1,21 @@
+<div class="config-part-container">
+  <mat-form-field class="description-container" appearance="fill">
+    <mat-label>Give your recipe a cool name!</mat-label>
+    <mat-hint>{{ nameHint }}</mat-hint>
+    <input type="text" [maxLength]="maxNameLen" [(ngModel)]="recipe.name" name="recipe-name" matInput>
+  </mat-form-field>
+  <mat-form-field class="description-container" appearance="fill">
+    <mat-label>Describe your recipe!</mat-label>
+    <mat-hint>{{ descriptionHint }}</mat-hint>
+    <textarea
+      rows="8"
+      [maxLength]="maxDescriptionLen"
+      name="description"
+      [(ngModel)]="recipe.description"
+      matInput>
+    </textarea>
+  </mat-form-field>
+  <mat-checkbox [(ngModel)]="recipe.private">
+    This recipe is private, and cannot be seen by anyone other than me
+  </mat-checkbox>
+</div>
