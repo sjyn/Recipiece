@@ -14,8 +14,8 @@ class SessionApi(BaseApi.BaseApi):
         parts = decodedSession.split('.')
         # @TODO -- eventually implement timeout
         try:
-            session = cls.getById(int(parts[0]))
-        except ValueError:
+            session = cls.getById(parts[0])
+        except:
             raise ApiExceptions.UnauthorizedException()
         if session is not None:
             return session
@@ -24,6 +24,6 @@ class SessionApi(BaseApi.BaseApi):
 
     @classmethod
     def serializeSession(cls, sessionDict: dict) -> str:
-        utcCreated = int(sessionDict['created'].utcnow().timestamp())
-        valToEncode = f"{sessionDict['id']}.{sessionDict['owner']}.{utcCreated}".encode('utf-8')
+        utcCreated = int(sessionDict['created'])
+        valToEncode = f"{sessionDict['_id']}.{sessionDict['owner']}.{utcCreated}".encode('utf-8')
         return base64.b64encode(valToEncode).decode('utf-8')

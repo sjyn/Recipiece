@@ -1,6 +1,25 @@
 <div class="config-part-container">
   <div class="action-buttons">
-    <button mat-stroked-button color="primary">Add Ingredient</button>
+    <button mat-stroked-button color="primary" (click)="addIngredient()">Add Ingredient</button>
     <button mat-button color="accent">Link Recipe</button>
   </div>
+  <ng-container *ngFor="let ingredient of recipe.ingredients; let index = index">
+    <div class="single-ing-container">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput type="text" [name]="'ing-name' + index" [(ngModel)]="ingredient.name">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Amount</mat-label>
+        <input matInput type="text" [name]="'ing-amnt' + index" [(ngModel)]="ingredient.amount">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Unit</mat-label>
+        <input matInput type="text" [name]="'ing-unit' + index" [(ngModel)]="ingredient.unit">
+      </mat-form-field>
+      <button mat-icon-button color="warn" (click)="removeIngredient(index)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </ng-container>
 </div>

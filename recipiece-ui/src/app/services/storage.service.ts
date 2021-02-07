@@ -7,20 +7,20 @@ import {ISession} from '../api/model/session';
 export class StorageService {
 
   public get loggedIn(): boolean {
-    return !!this.session?.token && !!this.session?.id;
+    return !!this.session?.token && !!this.session?._id;
   }
 
   public get session(): ISession {
     const storage = this.remember ? localStorage : sessionStorage;
     const token = storage.getItem(this.genKey('token'));
-    const id = +storage.getItem(this.genKey('id'));
-    return {token, id};
+    const id = storage.getItem(this.genKey('id'));
+    return {token, _id: id};
   }
 
   public set session(session: ISession) {
     const storage = this.remember ? localStorage : sessionStorage;
     storage.setItem(this.genKey('token'), session.token);
-    storage.setItem(this.genKey('id'), session.id.toString(10));
+    storage.setItem(this.genKey('id'), session._id);
   }
 
   public get remember(): boolean {

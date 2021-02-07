@@ -13,18 +13,18 @@ export class ApiConnector<T extends Model> {
   ) {
   }
 
-  public getById(id: number): Observable<Partial<T>> {
+  public getById(id: string): Observable<Partial<T>> {
     const url = `${this.baseUrl}/${id}`;
     return this.client.get(this.getFullUrl(url), {headers: this.getHeaders()})
       .pipe(
-        map((result) => {
-          return result as T;
+        map((result: any) => {
+          return result.data as T;
         }),
       );
   }
 
   public save(entity: Partial<T>): Observable<Partial<T>> {
-    if (!!entity.id) {
+    if (!!entity._id) {
       return this.update(entity);
     } else {
       return this.create(entity);
@@ -35,30 +35,32 @@ export class ApiConnector<T extends Model> {
     const url = `${this.baseUrl}/`;
     return this.client.post(this.getFullUrl(url), entity, {headers: this.getHeaders()})
       .pipe(
-        map((result) => {
-          return result as Partial<T>;
+        map((result: any) => {
+          return result.data as Partial<T>;
         }),
       );
   }
 
   protected update(entity: Partial<T>): Observable<Partial<T>> {
-    const url = `${this.baseUrl}/${entity.id}`;
+    const url = `${this.baseUrl}/${entity._id}`;
     return this.client.put(this.getFullUrl(url), entity, {headers: this.getHeaders()})
       .pipe(
-        map((result) => {
-          return result as Partial<T>;
+        map((result: any) => {
+          return result.data as Partial<T>;
         }),
       );
   }
 
-  public delete(entityId: number): Observable<any> {
-    return this.client.delete(this.getFullUrl(`${this.baseUrl}/`));
+  public delete(entityId: string): Observable<any> {
+    return this.client.delete(this.getFullUrl(`${this.baseUrl}/${entityId}`), {
+      headers: this.getHeaders(),
+    });
   }
 
   protected getHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     const session = this.storage.session;
-    if (!!session.token && !!session.id) {
+    if (!!session.token && !!session._id) {
       headers = headers.set('Authorization', `Bearer ${session.token}`);
     }
     headers = headers.set('Content-Type', 'application/json');
@@ -66,7 +68,7 @@ export class ApiConnector<T extends Model> {
   }
 
   protected getFullUrl(url: string): string {
-    return `${environment.apiHost}/${url}`;
+    return `${environment.api.protocol}://${environment.host}:${environment.api.port}/${url}`;
   }
 
 }

@@ -11,7 +11,7 @@ class TestUserRoute(BaseRouteTest.BaseRouteTest):
         }
         response = self.post('/users', body)
         self.assertEqual(201, response.status_code)
-        responseDict = json.loads(response.data)
+        responseDict = json.loads(response.data)['data']
         self.assertIsNotNone(responseDict.get('token', None))
         self.assertIsNotNone(responseDict.get('id', None))
 
@@ -27,6 +27,12 @@ class TestUserRoute(BaseRouteTest.BaseRouteTest):
         # log in the user
         response = self.post('/users/login', body)
         self.assertEqual(200, response.status_code)
-        responseDict = json.loads(response.data)
+        responseDict = json.loads(response.data)['data']
         self.assertIsNotNone(responseDict.get('token', None))
         self.assertIsNotNone(responseDict.get('id', None))
+
+    def test_DeleteUser(self):
+        pass
+
+    def test_DeleteUserWithBadToken(self):
+        pass

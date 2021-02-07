@@ -1,19 +1,23 @@
 import flask
 from flask import Flask
 from flask_cors import CORS
+
 from Api import SessionApi
 from Api.Exceptions import ApiExceptions
-from Routes import UserRoute, RecipeRoute
+from Routes import UserRoute, RecipeRoute, RecipeBookRoute
+from Routes.Helpers import ResponseEncoder
 
 app = Flask(__name__)
+app.json_encoder = ResponseEncoder.ResponseEncoder
 CORS(app)
-app.register_blueprint(UserRoute.users)
-app.register_blueprint(RecipeRoute.recipes)
+UserRoute.UserRoute.register(app, route_base='/users/')
+RecipeRoute.RecipeRoute.register(app, route_base='/recipes/')
+RecipeBookRoute.RecipeBookRoute.register(app, route_base='/books/')
 
 
 @app.before_request
 def processAuth():
-    sessionToken = flask.request.authorization
+    sessionToken = flask.request.headers.get('authorization')
     if sessionToken is not None:
         sessionToken = sessionToken.replace('Bearer', '').strip()
         session = SessionApi.SessionApi.validateSession(sessionToken)
@@ -32,7 +36,3 @@ def handleError(e: ApiExceptions.BaseApiException):
 @app.route('/', methods=['GET'])
 def hw():
     return 'Hello, World'
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='8080', debug=True)

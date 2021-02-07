@@ -1,0 +1,10 @@
+<h1>Delete {{recipeBook.name}}?</h1>
+<p>
+  Are you sure you want to delete this recipe book? This action cannot be undone,
+  and anyone you shared this book with will be unable to view it.
+</p>
+<div class="button-container">
+  <button mat-stroked-button (click)="close()" color="primary">Go Back</button>
+  <button mat-stroked-button (click)="deleteBook()" color="warn">Delete It</button>
+</div>
+

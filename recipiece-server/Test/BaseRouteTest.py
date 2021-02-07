@@ -1,7 +1,6 @@
 import json
 
 from Test import BaseTestCase
-from Server import app
 
 
 class BaseRouteTest(BaseTestCase.BaseTestCase):
@@ -9,6 +8,7 @@ class BaseRouteTest(BaseTestCase.BaseTestCase):
 
     def setUp(self) -> None:
         super().setUp()
+        from Main.App import app
         app.config['TESTING'] = True
         self.client = app.test_client()
 
@@ -34,11 +34,11 @@ class BaseRouteTest(BaseTestCase.BaseTestCase):
             headers = {}
         return self.client.delete(url, headers=headers, follow_redirects=True)
 
-    def createUser(self) -> (str, str):
+    def createUser(self, email='test@asdf.qwer') -> (str, str):
         testUser = {
-            'email': 'test@asdf.qwer',
+            'email': email,
             'password': 'asdfqwer'
         }
         response = self.post('users/', testUser)
-        responseJson = json.loads(response.data)
+        responseJson = json.loads(response.data)['data']
         return responseJson['token'], responseJson['id']

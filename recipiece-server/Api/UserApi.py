@@ -1,7 +1,9 @@
+import time
+
 from Api import BaseApi, SessionApi
 from Api.Exceptions import ApiExceptions
-from Database import DatabaseConstants, Encryption
-from Database.Database import Database
+from Database import DatabaseConstants
+from Util import Encryption
 
 
 class UserApi(BaseApi.BaseApi):
@@ -17,7 +19,7 @@ class UserApi(BaseApi.BaseApi):
             'salt': salt,
             'nonce': nonce
         }
-        return Database.create(cls._TABLE_NAME, userDict)
+        return cls.database.create(cls._TABLE_NAME, userDict)
 
     @classmethod
     def loginUser(cls, username: str, password: str) -> (str, int):
@@ -29,10 +31,11 @@ class UserApi(BaseApi.BaseApi):
             if Encryption.comparePasswords(expectedPassword, expectedNonce, expectedSalt, password):
                 # generate a session for the user
                 sessionDict = {
-                    'owner': userLookup['id']
+                    'owner': userLookup['_id'],
+                    'created': time.time()
                 }
                 sessionDict = SessionApi.SessionApi.create(sessionDict)
-                return SessionApi.SessionApi.serializeSession(sessionDict), userLookup['id']
+                return SessionApi.SessionApi.serializeSession(sessionDict), userLookup['_id']
             else:
                 raise ApiExceptions.ForbiddenException()
         else:
@@ -44,6 +47,7 @@ class UserApi(BaseApi.BaseApi):
 
     @classmethod
     def _getByUsername(cls, username: str) -> dict:
-        query = f'SELECT * FROM {cls._TABLE_NAME} WHERE `email` = "{username}"'
-        with Database.runQuery(query) as cursor:
-            return cursor.fetchone()
+        found = cls.database.client[cls._TABLE_NAME].find_one({'email': username})
+        if found is not None:
+            found['_id'] = str(found['_id'])
+        return found

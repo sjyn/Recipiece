@@ -1,24 +1,24 @@
 version: '3'
 services:
-  recipiece_database:
-    image: mariadb
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_DATABASE: 'recipiece'
-      MYSQL_USER: 'recipiece'
-      MYSQL_PASSWORD: 'test1234'
-      MYSQL_ROOT_PASSWORD: 'test1234'
+  mongo:
+    image: mongo:latest
+    container_name: 'recipiece-db'
     volumes:
-      - ./DOCKER_INIT.sql:/docker-entrypoint-initdb.d/DOCKER_INIT.sql
-  recipiece_test_database:
-    image: mariadb
-    ports:
-      - 3307:3306
+      - ./mongo.js:/docker-entrypoint-initdb.d/mongo.js:ro
     environment:
-      MYSQL_DATABASE: 'recipiece'
-      MYSQL_USER: 'recipiece'
-      MYSQL_PASSWORD: 'test1234'
-      MYSQL_ROOT_PASSWORD: 'test1234'
+      MONGO_INITDB_ROOT_USERNAME: recipiece
+      MONGO_INITDB_ROOT_PASSWORD: test1234
+      MONGO_INITDB_DATABASE: recipiece
+    ports:
+      - 27017:27017
+  test_mongo:
+    image: mongo:latest
+    container_name: 'recipiece-test-db'
     volumes:
-      - ./DOCKER_INIT.sql:/docker-entrypoint-initdb.d/DOCKER_INIT.sql
+      - ./mongo.js:/docker-entrypoint-initdb.d/mongo.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: recipiece
+      MONGO_INITDB_ROOT_PASSWORD: test1234
+      MONGO_INITDB_DATABASE: recipiece
+    ports:
+      - 27018:27017

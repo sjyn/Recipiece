@@ -1,9 +1,8 @@
 import base64
-import os
 import bcrypt
 from Crypto.Cipher import AES
 
-from Database.Secrets import SECRET_KEY
+from Util.Secrets import SECRET_KEY
 
 
 def encrypt(value: bytes, nonce: bytes = None) -> (bytes, bytes):
@@ -33,22 +32,6 @@ def comparePasswords(encryptedPassword: bytes, nonce: bytes, salt: bytes, rawPas
     actualEncrypted, _, _ = encryptPassword(rawPassword, salt=decodedSalt, nonce=decodedNonce)
     strippedExpected = encryptedPassword.rstrip(b'\x00')
     return actualEncrypted == strippedExpected
-
-# def hashAndEncrypt(value: str, salt: bytes = None) -> (bytes, bytes):
-#     if salt is None:
-#         salt = genSalt()
-#     pwHash = hashValue(value, salt)
-#
-#     encrypted = base64.b64encode(encrypt(pwHash))
-#     return encrypted, salt
-#     # encryptedVals = encrypt(pwHash)
-#     # hash = base64.b64encode(b'.'.join(encryptedVals))
-#     # return hash, salt
-#
-#
-# def comparePasswords(expectedPwHash: bytes, salt: bytes, rawPassword: str) -> bool:
-#     actualPasswordHash, _ = hashAndEncrypt(rawPassword, salt)
-#     return expectedPwHash == actualPasswordHash
 
 
 def genSalt() -> bytes:

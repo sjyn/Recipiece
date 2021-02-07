@@ -1,7 +1,15 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {IRecipeBook} from '../../../api/model/recipe-book';
 import {DashboardStateService} from '../dashboard-state.service';
-import {MatSelectionList, MatSelectionListChange} from '@angular/material/list';
+import {MatSelectionList} from '@angular/material/list';
+import {MatDialog} from '@angular/material/dialog';
+import {CreateRecipeBookModalComponent} from '../modals/create-recipe-book-modal/create-recipe-book-modal.component';
+import {RecipeBookService} from '../../../api/recipe-book.service';
+import {take} from 'rxjs/operators';
+import {Clipboard} from '@angular/cdk/clipboard';
+import {environment} from '../../../../environments/environment';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {DeleteRecipeBookModalComponent} from '../modals/delete-recipe-book-modal/delete-recipe-book-modal.component';
 
 @Component({
   selector: 'app-dashboard-drawer',
@@ -9,26 +17,82 @@ import {MatSelectionList, MatSelectionListChange} from '@angular/material/list';
   styleUrls: ['./dashboard-drawer.component.sass'],
 })
 export class DashboardDrawerComponent implements OnInit {
-  @Input() recipeBooks: Partial<IRecipeBook>[] = [];
+  public loading: boolean;
+  public recipeBooks: IRecipeBook[];
   @ViewChild('books') booksList: MatSelectionList;
+
+  public currentPage: number;
 
   constructor(
     private dashboardState: DashboardStateService,
+    private dialogService: MatDialog,
+    private recipeBookService: RecipeBookService,
+    private clipboard: Clipboard,
+    private snackbarService: MatSnackBar,
+    private modalService: MatDialog,
   ) {
   }
 
   ngOnInit(): void {
-    for (let i = 0; i < 200; i++) {
-      this.recipeBooks.push({
-        name: `test ${i}`,
-        description: `description ${i}`,
-        recipes: [],
+    this.currentPage = 0;
+    this.loadBookPage();
+  }
+
+  private loadBookPage() {
+    this.loading = true;
+    this.recipeBookService.listForUser(this.currentPage)
+      .pipe(take(1))
+      .subscribe((results: IRecipeBook[]) => {
+        this.recipeBooks = results;
+        this.loading = false;
+      }, () => {
+        this.loading = false;
       });
-    }
   }
 
   public handleSelectionChange() {
     this.dashboardState.selectedBook = this.booksList.selectedOptions.selected[0]?.value;
+  }
+
+  public createRecipeBook() {
+    const modalRef = this.dialogService.open(CreateRecipeBookModalComponent, {
+      minWidth: '300px',
+    });
+    modalRef.afterClosed()
+      .pipe(take(1))
+      .subscribe((result) => {
+        if (result !== null && result !== undefined) {
+          this.recipeBookService.save(result as IRecipeBook)
+            .pipe(take(1))
+            .subscribe((created: IRecipeBook) => {
+              this.recipeBooks.push(created);
+            });
+        }
+      });
+  }
+
+  public copyBookLink(recipeBook: IRecipeBook) {
+    const url = `${environment.serve.protocol}://${environment.host}:${environment.serve.port}/books/${recipeBook._id}`;
+    this.clipboard.copy(url);
+    const message = `A link to ${recipeBook.name} was copied to your clipboard`;
+    this.snackbarService.open(message, 'OK', {duration: 2000});
+  }
+
+  public deleteRecipeBook(recipeBook: IRecipeBook) {
+    const modalRef = this.modalService.open(DeleteRecipeBookModalComponent, {
+      data: {book: recipeBook},
+    });
+    modalRef.afterClosed()
+      .pipe(take(1))
+      .subscribe((shouldDelete: boolean) => {
+        if (shouldDelete === true) {
+          this.recipeBookService.delete(recipeBook._id)
+            .pipe(take(1))
+            .subscribe(() => {
+              this.recipeBooks = this.recipeBooks.filter((b) => b._id != recipeBook._id);
+            });
+        }
+      });
   }
 
 }

@@ -4,11 +4,28 @@
   </mat-drawer>
   <mat-drawer-content>
     <div class="drawer-content-container">
-      <ng-container *ngIf="!!dashboardState.selectedBook">
-        <app-view-recipe-book [recipeBook]="dashboardState.selectedBook"></app-view-recipe-book>
-      </ng-container>
-      <ng-container *ngIf="dashboardState.selectedBook === undefined">
-        <app-view-all-recipes></app-view-all-recipes>
+      <div class="header-wrapper">
+        <ng-container *ngIf="!!dashboardState.selectedBook">
+          <h1>{{ dashboardState.selectedBook.name }}</h1>
+        </ng-container>
+        <ng-container *ngIf="dashboardState.selectedBook === undefined">
+          <h1>All Your Recipes</h1>
+        </ng-container>
+        <ng-container *ngIf="dashboardState.loading">
+          <mat-spinner diameter="20"></mat-spinner>
+        </ng-container>
+      </div>
+      <span *ngIf="!!dashboardState.selectedBook">{{ dashboardState.selectedBook.description }}</span>
+
+      <ng-container *ngIf="!dashboardState.loading">
+        <app-recipe-card-grid
+          [manageable]="true"
+          (edited)="recipeEdited($event)"
+          (copied)="recipeCopied($event)"
+          (deleted)="recipeDeleted($event)"
+          (viewed)="recipeViewed($event)"
+          [recipes]="dashboardState.recipes">
+        </app-recipe-card-grid>
       </ng-container>
     </div>
   </mat-drawer-content>

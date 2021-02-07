@@ -1,5 +1,3 @@
-import base64
-
 from Api import UserApi
 from Api.Exceptions import ApiExceptions
 from Test import BaseTestCase
@@ -17,7 +15,7 @@ class TestUserApi(BaseTestCase.BaseTestCase):
         self.assertEqual(email, createdUser['email'])
         self.assertNotEqual(password, createdUser['password'])
         self.assertIsNotNone(createdUser.get('salt', None))
-        self.assertIsNotNone(createdUser.get('id', None))
+        self.assertIsNotNone(createdUser.get('_id', None))
         self.assertIsNotNone(createdUser.get('nonce', None))
         return createdUser
 
@@ -27,6 +25,7 @@ class TestUserApi(BaseTestCase.BaseTestCase):
     def test_LoginUserWithValidCredentials(self):
         createdUser = self._createUser()
         response = UserApi.UserApi.loginUser(createdUser['email'], self._DEFAULT_PASS)
+        self.assertIsNotNone(response)
 
     def test_LoginFailsWithBadPassword(self):
         createdUser = self._createUser()

@@ -1,11 +1,12 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ViewRecipeBookComponent } from './view-recipe-book.component';
-
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ViewRecipeBookComponent} from './view-recipe-book.component';
 
 
 @NgModule({
-  declarations: [ViewRecipeBookComponent],
+  declarations: [
+    ViewRecipeBookComponent,
+  ],
   exports: [
     ViewRecipeBookComponent,
   ],
@@ -13,4 +14,5 @@ import { ViewRecipeBookComponent } from './view-recipe-book.component';
     CommonModule,
   ],
 })
-export class ViewRecipeBookModule { }
+export class ViewRecipeBookModule {
+}

@@ -1,5 +1,6 @@
-PyMySQL==1.0.2
+pymongo==3.11.3
 Flask
 pycryptodome==3.9.9
 bcrypt==3.2.0
 flask-cors==3.0.10
+flask-classful==0.14.2

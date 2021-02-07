@@ -1,5 +1,4 @@
-from Api import UserApi
-from Api.Recipes import RecipeApi
+from Api import UserApi, RecipeApi
 from Database import DatabaseConstants
 from Test import BaseTestCase
 
@@ -10,8 +9,8 @@ class TestRecipeApi(BaseTestCase.BaseTestCase):
         recipeBody = {
             'name': 'Test Recipe',
             'description': 'A really cool recipe that we can test with',
-            'owner': user['id'],
-            'private': 0,
+            'owner': user['_id'],
+            'private': False,
             'steps': [
                 {'content': 'asdfqwer', 'idx': 0},
                 {'content': 'z' * 1000, 'idx': 1},
@@ -57,15 +56,15 @@ class TestRecipeApi(BaseTestCase.BaseTestCase):
             'idx': 4,
         })
         recipe['steps'] = recipe['steps'][0:2]
-        updatedRecipe = RecipeApi.RecipeApi.update(recipe['id'], recipe)
+        updatedRecipe = RecipeApi.RecipeApi.update(recipe['_id'], recipe)
         self.assertEqual(4, len(updatedRecipe['ingredients']))
         self.assertEqual(2, len(updatedRecipe['steps']))
-        self.assertIsNotNone(updatedRecipe.get('id', None))
+        self.assertIsNotNone(updatedRecipe.get('_id', None))
         self.assertEqual(recipe['name'], updatedRecipe['name'])
 
     def test_GetRecipe(self):
         _, recipe = self._createRecipe()
-        fetchedRecipe = RecipeApi.RecipeApi.getById(recipe['id'])
+        fetchedRecipe = RecipeApi.RecipeApi.getById(recipe['_id'])
         self.assertEqual('Test Recipe', fetchedRecipe['name'])
         self.assertEqual('A really cool recipe that we can test with', fetchedRecipe['description'])
         self.assertEqual(3, len(fetchedRecipe['steps']))
@@ -78,8 +77,8 @@ class TestRecipeApi(BaseTestCase.BaseTestCase):
             RecipeApi.RecipeApi.create({
                 'name': f'Test Recipe {i}',
                 'description': f'Test Des {i}',
-                'owner': user['id'],
-                'private': 0,
+                'owner': user['_id'],
+                'private': False,
                 'ingredients': [{
                     'name': f'ing {i}',
                     'amount': '100',
@@ -92,11 +91,10 @@ class TestRecipeApi(BaseTestCase.BaseTestCase):
                 }]
             })
 
-        firstPage, nextOffset = RecipeApi.RecipeApi.listForUser(user['id'], 0, True)
+        firstPage = RecipeApi.RecipeApi.listForUser(user['_id'], 0, True)
         self.assertEqual(DatabaseConstants.PAGE_SIZE, len(firstPage))
-        self.assertEqual(1, nextOffset)
 
-        secondPage, nextOffset = RecipeApi.RecipeApi.listForUser(user['id'], nextOffset, True)
+        secondPage = RecipeApi.RecipeApi.listForUser(user['_id'], 1, True)
         self.assertEqual(DatabaseConstants.PAGE_SIZE / 2, len(secondPage))
 
     def test_GetForUserWithPrivateRecipes(self):
@@ -105,8 +103,8 @@ class TestRecipeApi(BaseTestCase.BaseTestCase):
             RecipeApi.RecipeApi.create({
                 'name': f'Test Recipe {i}',
                 'description': f'Test Des {i}',
-                'owner': user['id'],
-                'private': i % 2,
+                'owner': user['_id'],
+                'private': i % 2 == 0,
                 'ingredients': [{
                     'name': f'ing {i}',
                     'amount': '100',
@@ -118,5 +116,5 @@ class TestRecipeApi(BaseTestCase.BaseTestCase):
                     'idx': 0
                 }]
             })
-        firstPage, _ = RecipeApi.RecipeApi.listForUser(user['id'], 0, False)
-        self.assertEqual(DatabaseConstants.PAGE_SIZE / 2, len(firstPage))
+        firstPage = RecipeApi.RecipeApi.listForUser(user['_id'], 0, allowPrivate=False)
+        self.assertEqual(int(DatabaseConstants.PAGE_SIZE / 2), len(firstPage))

@@ -13,6 +13,9 @@ import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatListModule} from '@angular/material/list';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -31,6 +34,9 @@ import {MatButtonModule} from '@angular/material/button';
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatSelectModule,
   ],
   providers: [
     ConfigManagerService,

@@ -1,9 +1,9 @@
 <div class="dashboard-drawer-container">
   <div class="recipe-books-container">
     <div class="create-book-container">
-      <button mat-stroked-button color="primary">Create a Recipe Book</button>
+      <button mat-stroked-button color="primary" (click)="createRecipeBook()">Create a Recipe Book</button>
     </div>
-    <div class="recipe-books-list">
+    <div class="recipe-books-list" *ngIf="!loading">
       <mat-selection-list dense #books (selectionChange)="handleSelectionChange()" [multiple]="false">
         <mat-list-option [value]="undefined">
           View All Recipes
@@ -15,9 +15,17 @@
           </div>
         </ng-container>
         <ng-container *ngIf="recipeBooks.length > 0">
-          <mat-list-option *ngFor="let book of recipeBooks" [value]="book">
-            {{ book.name }}
-          </mat-list-option>
+          <div class="book-item-wrapper" *ngFor="let book of recipeBooks">
+            <mat-list-option [value]="book">
+              {{ book.name }}
+            </mat-list-option>
+            <button (click)="copyBookLink(book)" mat-icon-button>
+              <mat-icon>link</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteRecipeBook(book)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </ng-container>
       </mat-selection-list>
     </div>

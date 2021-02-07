@@ -1,1 +1,46 @@
-<p>config-recipe-steps works!</p>
+<div class="config-part-container">
+  <div class="action-buttons">
+    <button mat-stroked-button color="primary" (click)="addStep()">Add Step</button>
+    <button mat-button color="accent">Link Recipe</button>
+  </div>
+  <ng-container *ngFor="let step of recipe.steps; let index = index">
+    <div class="step-input-header">
+      <h3>Step {{ index + 1 }}</h3>
+      <button mat-icon-button color="warn" (click)="removeStep(index)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>What do you need to do?</mat-label>
+      <mat-hint>{{ step.content.length }} / {{ maxStepLen }}</mat-hint>
+      <textarea
+        rows="8"
+        matInput
+        [maxLength]="maxStepLen"
+        [(ngModel)]="step.content"
+        [name]="'step-content-' + index">
+      </textarea>
+    </mat-form-field>
+    <div class="step-len-input-container">
+      <span class="leading-text">This step takes</span>
+      <mat-form-field class="time-input">
+        <mat-label>{{ getHintForTimeInput(index) }}</mat-label>
+        <input
+          step="1"
+          matInput
+          min="0"
+          [(ngModel)]="step.length.time"
+          [name]="'step-timestamp-' + index"
+          type="number">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select [(ngModel)]="step.length.unit" [name]="'step-len-unit-' + index">
+          <mat-option value="m">{{ getDisplayForOption(index, 'm') }}</mat-option>
+          <mat-option value="h">{{ getDisplayForOption(index, 'h') }}</mat-option>
+          <mat-option value="d">{{ getDisplayForOption(index, 'd') }}</mat-option>
+          <mat-option value="w">{{ getDisplayForOption(index, 'w') }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </ng-container>
+</div>

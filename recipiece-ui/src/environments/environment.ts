@@ -4,8 +4,16 @@
 
 export const environment = {
   production: false,
-  apiHost: 'http://localhost:8080',
+  host: 'localhost',
   pageSize: 100,
+  api: {
+    protocol: 'http',
+    port: 8080,
+  },
+  serve: {
+    protocol: 'http',
+    port: 4200,
+  },
 };
 
 /*

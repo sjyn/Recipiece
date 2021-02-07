@@ -1,0 +1,13 @@
+<div class="recipe-card-container" *ngIf="recipes.length > 0">
+  <div class="single-card-wrapper" *ngFor="let recipe of recipes">
+    <app-recipe-card
+      [allowEdit]="manageable"
+      [allowDelete]="manageable"
+      (edited)="recipeEdited($event)"
+      (viewed)="recipeViewed($event)"
+      (deleted)="recipeDeleted($event)"
+      (linked)="recipeCopied($event)"
+      [recipe]="recipe">
+    </app-recipe-card>
+  </div>
+</div>

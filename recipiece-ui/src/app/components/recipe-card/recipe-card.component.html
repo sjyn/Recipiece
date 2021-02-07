@@ -1,0 +1,18 @@
+<mat-card class="recipe-card">
+  <mat-card-title><span [title]="recipe.name">{{ recipe.name }}</span></mat-card-title>
+  <mat-card-subtitle><span [title]="recipe.description">{{ recipe.description }}</span></mat-card-subtitle>
+  <mat-card-actions>
+    <button (click)="viewPressed()" mat-icon-button color="primary">
+      <mat-icon>visibility</mat-icon>
+    </button>
+    <button (click)="linkPressed()" mat-icon-button color="primary" *ngIf="!recipe.private">
+      <mat-icon>link</mat-icon>
+    </button>
+    <button (click)="editPressed()" mat-icon-button color="accent" *ngIf="allowEdit">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button (click)="deletePressed()" mat-icon-button color="warn" *ngIf="allowDelete">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

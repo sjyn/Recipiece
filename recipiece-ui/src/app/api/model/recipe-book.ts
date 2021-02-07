@@ -1,8 +1,8 @@
 import {Model} from './model';
 
 export interface IRecipeBook extends Model {
-  id: number;
+  _id: string;
   name: string;
   description: string;
-  recipes: number[];
+  recipes: string[];
 }

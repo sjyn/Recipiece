@@ -1,5 +1,15 @@
 <div class="config-container">
-  <h1>Create a Recipe</h1>
+  <h1>{{ headerText }}</h1>
+  <div class="error-container" *ngIf="!!errorText">
+    {{ errorText }}
+  </div>
+  <button
+    (click)="saveRecipe()"
+    mat-stroked-button
+    color="primary"
+    *ngIf="errorText === undefined">
+    Save Recipe
+  </button>
   <mat-tab-group animationDuration="0ms">
     <mat-tab label="Basics">
       <ng-container *ngIf="!loading">
@@ -7,10 +17,10 @@
       </ng-container>
     </mat-tab>
     <mat-tab label="Ingredients">
-      <app-config-recipe-ingredients></app-config-recipe-ingredients>
+      <app-config-recipe-ingredients [recipe]="recipe"></app-config-recipe-ingredients>
     </mat-tab>
     <mat-tab label="Steps">
-      <app-config-recipe-steps></app-config-recipe-steps>
+      <app-config-recipe-steps [recipe]="recipe"></app-config-recipe-steps>
     </mat-tab>
   </mat-tab-group>
 </div>

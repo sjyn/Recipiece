@@ -23,10 +23,11 @@ export class UserService extends ApiConnector<IUser> {
     this.storage.remember = remember;
     const url = `${this.baseUrl}/login`;
     const body = {email, password};
-    return this.client.post(this.getFullUrl(url), body, {headers: this.getHeaders()})
+    const headers = this.getHeaders().delete('Authorization');
+    return this.client.post(this.getFullUrl(url), body, {headers: headers})
       .pipe(
-        map((response) => {
-          const session = response as ISession;
+        map((response: any) => {
+          const session = response.data as ISession;
           this.storage.session = session;
           return session;
         }),
@@ -36,10 +37,11 @@ export class UserService extends ApiConnector<IUser> {
   public createUser(user: Partial<IUser>, remember: boolean): Observable<ISession> {
     this.storage.remember = remember;
     const url = `${this.baseUrl}/`;
-    return this.client.post(this.getFullUrl(url), user, {headers: this.getHeaders()})
+    const headers = this.getHeaders().delete('Authorization');
+    return this.client.post(this.getFullUrl(url), user, {headers: headers})
       .pipe(
-        map((response) => {
-          const session = response as ISession;
+        map((response: any) => {
+          const session = response.data as ISession;
           this.storage.session = session;
           return session;
         }),

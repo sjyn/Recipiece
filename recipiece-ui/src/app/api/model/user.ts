@@ -1,7 +1,7 @@
 import {Model} from './model';
 
 export interface IUser extends Model {
-  id: number;
+  _id: string;
   email: string;
   password: string;
 }
