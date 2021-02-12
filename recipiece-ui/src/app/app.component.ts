@@ -10,7 +10,7 @@ import {StorageService} from './services/storage.service';
   styleUrls: ['./app.component.sass'],
 })
 export class AppComponent {
-  title = 'recipiece-ui';
+  title = 'recipiece';
 
   readonly actions: MatFabMenu[] = [
     {icon: 'info', id: 3, tooltip: 'About', tooltipPosition: 'left'},
@@ -33,6 +33,9 @@ export class AppComponent {
     switch (actionId) {
       case 1:
         this.router.navigate(['config']);
+        break;
+      case 2:
+        this.router.navigate(['profile']);
         break;
     }
   }

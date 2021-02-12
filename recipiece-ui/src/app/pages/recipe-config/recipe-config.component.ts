@@ -20,36 +20,38 @@ export class RecipeConfigComponent implements OnInit {
   }
 
   public get errorText(): string {
-    if ((this.recipe.name || '').trim() === '') {
-      return 'You need to name your recipe.';
-    } else if ((this.recipe.description || '').trim() === '') {
-      return 'You need to give your recipe a description.';
-    }
-
-    // we really only need to check steps/ings on recipes with no links
-    if ((this.recipe.links || []).length === 0) {
-      if ((this.recipe.ingredients || []).length === 0) {
-        return 'Your recipe should have at least one ingredient, or a linked recipe.';
-      } else if ((this.recipe.steps || []).length === 0) {
-        return 'Your recipe should have at least one step, or a linked recipe.';
+    if(!!this.recipe) {
+      if ((this.recipe.name || '').trim() === '') {
+        return 'You need to name your recipe.';
+      } else if ((this.recipe.description || '').trim() === '') {
+        return 'You need to give your recipe a description.';
       }
 
-      const invalidIngs = this.recipe.ingredients.map((ing, index) => {
-        return {ing, index};
-      }).filter((mappedIng) => {
-        return (mappedIng.ing.amount || '').trim() === '' || (mappedIng.ing.name || '').trim() === '';
-      });
-      if (invalidIngs.length > 0) {
-        return `Ingredient ${invalidIngs[0].index + 1} needs to have a name and an amount.`;
-      }
+      // we really only need to check steps/ings on recipes with no links
+      if ((this.recipe.links || []).length === 0) {
+        if ((this.recipe.ingredients || []).length === 0) {
+          return 'Your recipe should have at least one ingredient, or a linked recipe.';
+        } else if ((this.recipe.steps || []).length === 0) {
+          return 'Your recipe should have at least one step, or a linked recipe.';
+        }
 
-      const invalidSteps = this.recipe.steps.map((step, index: number) => {
-        return {content: step.content || '', index: index};
-      }).filter((step) => {
-        return step.content.trim() === '';
-      });
-      if (invalidSteps.length > 0) {
-        return `Step ${invalidSteps[0].index + 1} needs some content.`;
+        const invalidIngs = this.recipe.ingredients.map((ing, index) => {
+          return {ing, index};
+        }).filter((mappedIng) => {
+          return (mappedIng.ing.amount || '').trim() === '' || (mappedIng.ing.name || '').trim() === '';
+        });
+        if (invalidIngs.length > 0) {
+          return `Ingredient ${invalidIngs[0].index + 1} needs to have a name and an amount.`;
+        }
+
+        const invalidSteps = this.recipe.steps.map((step, index: number) => {
+          return {content: step.content || '', index: index};
+        }).filter((step) => {
+          return step.content.trim() === '';
+        });
+        if (invalidSteps.length > 0) {
+          return `Step ${invalidSteps[0].index + 1} needs some content.`;
+        }
       }
     }
     return undefined;
@@ -79,6 +81,7 @@ export class RecipeConfigComponent implements OnInit {
       )
       .subscribe((recipe) => {
         this.recipe = recipe as IRecipe;
+        console.log(recipe)
         this.loading = false;
       });
   }

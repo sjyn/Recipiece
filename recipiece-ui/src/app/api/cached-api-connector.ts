@@ -76,7 +76,7 @@ export class CachedApiConnector<T extends Model> extends ApiConnector<T> {
   }
 
   protected cacheEntity(entity: Partial<T>): boolean {
-    return true;
+    return false;
   }
 
   public clearCache() {

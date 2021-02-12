@@ -41,4 +41,11 @@ export class StorageService {
   private genKey(postfix: string): string {
     return `recipeice-${postfix}`;
   }
+
+  public logoutUser() {
+    const storage = this.remember ? localStorage : sessionStorage;
+    storage.removeItem(this.genKey('token'));
+    storage.removeItem(this.genKey('id'));
+    localStorage.removeItem(this.genKey('remember'));
+  }
 }

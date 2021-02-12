@@ -20,6 +20,8 @@
       <ng-container *ngIf="!dashboardState.loading">
         <app-recipe-card-grid
           [manageable]="true"
+          [draggable]="true"
+          [iconClasses]="iconClasses"
           (edited)="recipeEdited($event)"
           (copied)="recipeCopied($event)"
           (deleted)="recipeDeleted($event)"

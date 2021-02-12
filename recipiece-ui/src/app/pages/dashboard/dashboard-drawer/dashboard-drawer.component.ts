@@ -10,6 +10,7 @@ import {Clipboard} from '@angular/cdk/clipboard';
 import {environment} from '../../../../environments/environment';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {DeleteRecipeBookModalComponent} from '../modals/delete-recipe-book-modal/delete-recipe-book-modal.component';
+import {IRecipe} from '../../../api/model/recipe';
 
 @Component({
   selector: 'app-dashboard-drawer',
@@ -19,6 +20,7 @@ import {DeleteRecipeBookModalComponent} from '../modals/delete-recipe-book-modal
 export class DashboardDrawerComponent implements OnInit {
   public loading: boolean;
   public recipeBooks: IRecipeBook[];
+  public draggedBookId: string;
   @ViewChild('books') booksList: MatSelectionList;
 
   public currentPage: number;
@@ -93,6 +95,37 @@ export class DashboardDrawerComponent implements OnInit {
             });
         }
       });
+  }
+
+  public recipeDropped(event, recipeBook: IRecipeBook, bookIndex: number) {
+    event.preventDefault();
+    this.draggedBookId = undefined;
+    const recipe: IRecipe = JSON.parse(event.dataTransfer.getData('text'));
+    if (!recipeBook.recipes.includes(recipe._id)) {
+      recipeBook.recipes.push(recipe._id);
+      this.recipeBookService.save(recipeBook)
+        .pipe(take(1))
+        .subscribe((savedBook: IRecipeBook) => {
+          this.recipeBooks[bookIndex] = savedBook;
+        });
+    }
+  }
+
+  public allowDrop(event) {
+    event.preventDefault();
+  }
+
+  public dragEntered(event, recipeBook: IRecipeBook) {
+    event.preventDefault();
+    const recipe: IRecipe = JSON.parse(event.dataTransfer.getData('text'));
+    if (!recipeBook.recipes.includes(recipe._id)) {
+      this.draggedBookId = recipeBook._id;
+    }
+  }
+
+  public dragExited(event, recipeBook: IRecipeBook) {
+    event.preventDefault();
+    this.draggedBookId = undefined;
   }
 
 }

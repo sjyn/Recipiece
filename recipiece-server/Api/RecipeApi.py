@@ -3,21 +3,21 @@ import time
 from pymongo.cursor import Cursor
 
 from Api import BaseApi
-from Database import DatabaseConstants
+from Database import DatabaseConstants, Models
 from Database.Database import IdType
 
 
-class RecipeApi(BaseApi.UserOwnedApi):
+class RecipeApi(BaseApi.UserOwnedApi[Models.Recipe]):
     _TABLE_NAME = DatabaseConstants.RECIPES
 
     @classmethod
-    def create(cls, entity: dict, userId: str) -> dict:
+    def create(cls, entity: Models.Recipe, userId: str) -> Models.Recipe:
         entity['created'] = int(time.time())
         entity['owner'] = userId
         return super().create(entity, userId)
 
     @classmethod
-    def listForUser(cls, userId: IdType, offset: int, allowPrivate: bool) -> [dict]:
+    def listForUser(cls, userId: IdType, offset: int, allowPrivate: bool) -> [Models.Recipe]:
         query = {'owner': userId}
         if not allowPrivate:
             query['private'] = False

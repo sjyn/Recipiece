@@ -3,7 +3,9 @@
     <div class="create-book-container">
       <button mat-stroked-button color="primary" (click)="createRecipeBook()">Create a Recipe Book</button>
     </div>
-    <div class="recipe-books-list" *ngIf="!loading">
+    <div
+      class="recipe-books-list"
+      *ngIf="!loading">
       <mat-selection-list dense #books (selectionChange)="handleSelectionChange()" [multiple]="false">
         <mat-list-option [value]="undefined">
           View All Recipes
@@ -15,17 +17,24 @@
           </div>
         </ng-container>
         <ng-container *ngIf="recipeBooks.length > 0">
-          <div class="book-item-wrapper" *ngFor="let book of recipeBooks">
-            <mat-list-option [value]="book">
-              {{ book.name }}
-            </mat-list-option>
-            <button (click)="copyBookLink(book)" mat-icon-button>
-              <mat-icon>link</mat-icon>
-            </button>
-            <button mat-icon-button (click)="deleteRecipeBook(book)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
+          <ng-container *ngFor="let book of recipeBooks; let index = index">
+            <div
+              class="book-item-wrapper"
+              (dragover)="allowDrop($event)"
+              (dragenter)="dragEntered($event, book)"
+              (dragexit)="dragExited($event, book)"
+              (drop)="recipeDropped($event, book, index)">
+              <mat-list-option [ngClass]="{'drag-selected': draggedBookId === book._id}" [value]="book">
+                {{ book.name }}
+              </mat-list-option>
+              <button (click)="copyBookLink(book)" mat-icon-button>
+                <mat-icon>link</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteRecipeBook(book)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </ng-container>
         </ng-container>
       </mat-selection-list>
     </div>

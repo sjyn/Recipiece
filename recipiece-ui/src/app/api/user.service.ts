@@ -4,7 +4,7 @@ import {IUser} from './model/user';
 import {HttpClient} from '@angular/common/http';
 import {StorageService} from '../services/storage.service';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, take, tap} from 'rxjs/operators';
 import {ISession} from './model/session';
 
 @Injectable({
@@ -50,6 +50,36 @@ export class UserService extends ApiConnector<IUser> {
 
   public logoutUser(): Observable<any> {
     const url = this.getFullUrl(`${this.baseUrl}/logout`);
-    return this.client.post(url, null, {headers: this.getHeaders()});
+    return this.client.post(url, null, {headers: this.getHeaders()})
+      .pipe(
+        tap(() => {
+          this.storage.logoutUser();
+        }),
+      );
+  }
+
+  public logoutEverywhere(): Observable<any> {
+    const url = this.getFullUrl(`${this.baseUrl}/logout-everywhere`);
+    return this.client.post(url, null, {headers: this.getHeaders()})
+      .pipe(
+        tap(() => {
+          this.storage.logoutUser();
+        }),
+      );
+  }
+
+  public changePassword(oldPassword: string, newPassword: string): Observable<any> {
+    const url = this.getFullUrl(`${this.baseUrl}/${this.storage.session._id}/password-change`);
+    const body = {new: newPassword, old: oldPassword};
+    return this.client.post(url, body, {headers: this.getHeaders()});
+  }
+
+  public delete(entityId: string): Observable<any> {
+    return super.delete(entityId)
+      .pipe(
+        tap(() => {
+          this.storage.logoutUser();
+        }),
+      );
   }
 }

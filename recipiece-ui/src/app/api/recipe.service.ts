@@ -18,8 +18,8 @@ export class RecipeService extends CachedApiConnector<IRecipe> {
     super(client, storage, 'recipes');
   }
 
-  protected cacheEntity(entity: Partial<IRecipe>): boolean {
-    // only cache entities we own
-    return entity.owner === this.storage.session?._id;
-  }
+  // protected cacheEntity(entity: Partial<IRecipe>): boolean {
+  //   // only cache entities we own
+  //   return entity.owner === this.storage.session?._id;
+  // }
 }

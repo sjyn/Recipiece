@@ -1,4 +1,4 @@
-<div class="config-container">
+<div class="config-container" *ngIf="!loading">
   <h1>{{ headerText }}</h1>
   <div class="error-container" *ngIf="!!errorText">
     {{ errorText }}

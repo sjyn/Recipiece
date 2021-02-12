@@ -1,8 +1,11 @@
 <div class="recipe-card-container" *ngIf="recipes.length > 0">
   <div class="single-card-wrapper" *ngFor="let recipe of recipes">
     <app-recipe-card
+      [draggable]="draggable"
+      (dragstart)="dragStart($event, recipe)"
       [allowEdit]="manageable"
       [allowDelete]="manageable"
+      [icons]="iconClasses"
       (edited)="recipeEdited($event)"
       (viewed)="recipeViewed($event)"
       (deleted)="recipeDeleted($event)"

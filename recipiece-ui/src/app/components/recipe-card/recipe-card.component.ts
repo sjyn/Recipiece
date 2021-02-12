@@ -3,6 +3,15 @@ import {IRecipe} from '../../api/model/recipe';
 import {Clipboard} from '@angular/cdk/clipboard';
 import {environment} from '../../../environments/environment';
 
+
+export interface RecipeCardIconClasses {
+  delete: string;
+  edit: string;
+  view: string;
+  link: string;
+}
+
+
 @Component({
   selector: 'app-recipe-card',
   templateUrl: './recipe-card.component.html',
@@ -12,10 +21,20 @@ export class RecipeCardComponent implements OnInit {
   @Input() recipe: IRecipe;
   @Input() allowEdit: boolean;
   @Input() allowDelete: boolean;
+  @Input() icons: Partial<RecipeCardIconClasses> = {};
   @Output() edited: EventEmitter<IRecipe>;
   @Output() deleted: EventEmitter<IRecipe>;
   @Output() viewed: EventEmitter<IRecipe>;
   @Output() linked: EventEmitter<IRecipe>;
+
+  public iconClasses: RecipeCardIconClasses;
+
+  private readonly defaultIconClasses: RecipeCardIconClasses = {
+    delete: 'delete',
+    edit: 'edit',
+    view: 'visibility',
+    link: 'link',
+  };
 
   constructor(
     private clipboard: Clipboard,
@@ -27,6 +46,10 @@ export class RecipeCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.iconClasses = {
+      ...this.defaultIconClasses,
+      ...this.icons,
+    };
   }
 
   public editPressed() {

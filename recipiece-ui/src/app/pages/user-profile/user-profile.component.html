@@ -1,0 +1,45 @@
+<div class="profile-container">
+  <h1>Your Profile</h1>
+  <div class="user-profile-card-wrapper" *ngIf="!loading">
+    <mat-card class="user-profile-card">
+      <mat-card-title>Email</mat-card-title>
+      <mat-card-content>
+        <p>Your email address for Recipiece is {{user?.email}}</p>
+        <p>We will not contact you unless it is to reset your password.</p>
+        <p>Your email address is not visible to anyone other than you.</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="user-profile-card">
+      <mat-card-title>Log Out</mat-card-title>
+      <mat-card-content>
+        <p>Log out by using the button below.</p>
+        <button (click)="logoutUser()" class="logout-button" mat-flat-button color="primary">Log out</button>
+        <button (click)="logoutEverywhere()" class="logout-button" mat-flat-button color="warn">
+          Log out from all devices
+        </button>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="user-profile-card">
+      <mat-card-title>Change Password</mat-card-title>
+      <mat-card-content>
+        <p>
+          Your password can be changed by using the button below.
+          This will log you out on all devices and require you to sign back in.
+        </p>
+        <button (click)="changePassword()" class="logout-button" mat-flat-button color="primary">Change Password</button>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="user-profile-card">
+      <mat-card-title>Delete Account</mat-card-title>
+      <mat-card-content>
+        <p>You can delete your account by pressing the button below.</p>
+        <p>This action is permanent and cannot be undone.</p>
+        <p>All your recipes will be deleted from Recipiece permanently.</p>
+        <button class="logout-button" (click)="deleteAccount()" mat-flat-button color="warn">Delete Account</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

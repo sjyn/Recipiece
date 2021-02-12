@@ -11,5 +11,5 @@ class BaseTestCase(unittest.TestCase):
         self._initDb()
 
     def _initDb(self):
-        database = Environment.getDatabase()
-        database.clear()
+        self.database = Environment.getDatabase()
+        self.database.clear()

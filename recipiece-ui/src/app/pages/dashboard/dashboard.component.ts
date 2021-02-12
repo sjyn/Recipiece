@@ -3,10 +3,11 @@ import {UiGlobalsService} from '../../services/ui-globals.service';
 import {DashboardStateService} from './dashboard-state.service';
 import {IRecipe} from '../../api/model/recipe';
 import {DeleteRecipeModalComponent} from './modals/delete-recipe-modal/delete-recipe-modal.component';
-import {switchMap, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {RecipeCardIconClasses} from '../../components/recipe-card/recipe-card.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +15,13 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   styleUrls: ['./dashboard.component.sass'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+
+  public get iconClasses(): Partial<RecipeCardIconClasses> {
+    if (!!this.dashboardState.selectedBook) {
+      return {delete: 'highlight_off'};
+    }
+    return {};
+  }
 
   constructor(
     public uiGlobals: UiGlobalsService,
@@ -44,6 +52,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public recipeDeleted(recipe: IRecipe) {
+    if (!!this.dashboardState.selectedBook) {
+      this.removeRecipeFromBook(recipe);
+    } else {
+      this.deleteRecipe(recipe);
+    }
+  }
+
+  private removeRecipeFromBook(recipe: IRecipe) {
+
+  }
+
+  private deleteRecipe(recipe: IRecipe) {
     const dialogRef = this.modalService.open(DeleteRecipeModalComponent, {
       data: {recipe: recipe},
     });

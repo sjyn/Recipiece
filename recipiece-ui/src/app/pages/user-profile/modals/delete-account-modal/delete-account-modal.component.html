@@ -1,0 +1,25 @@
+<h1>Delete Account?</h1>
+<p>
+  Please verify that you want to delete your account by entering your email address below.
+  Be warned: this action cannot be undone, and all your data will be permanently deleted.
+  Anyone with a link to your recipes and other collections will no longer be able to access the data.
+</p>
+<mat-form-field>
+  <mat-label>Confirm Email Address</mat-label>
+  <input type="text" name="conf-email" [(ngModel)]="actualEmail" matInput>
+</mat-form-field>
+<div class="button-container">
+  <button
+    mat-stroked-button
+    (click)="cancel()"
+    color="primary">
+    Go Back
+  </button>
+  <button
+    mat-stroked-button
+    color="warn"
+    [disabled]="disableDelete"
+    (click)="deleteAccount()">
+    Delete My Account
+  </button>
+</div>
