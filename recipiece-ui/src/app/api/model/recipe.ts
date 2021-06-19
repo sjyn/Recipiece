@@ -1,17 +1,25 @@
 import {Model} from './model';
 
 export interface IRecipe extends Model {
-  _id: string;
+  _id?: string;
   name: string;
   description: string;
-  private: number;
+  private: boolean;
   steps: IRecipeStep[];
   ingredients: IRecipeIngredient[];
-  links?: IRecipe[];
-  owner: string;
+  links?: string[];
+  owner?: string;
+  advanced: IRecipeAdvancedOptions;
 }
 
 type StepLenUnit = 'm' | 'h' | 'd' | 'w';
+
+
+export interface IRecipeAdvancedOptions {
+  highAltitude?: boolean;
+  altitude?: number;
+}
+
 
 export interface IRecipeStep {
   content: string;

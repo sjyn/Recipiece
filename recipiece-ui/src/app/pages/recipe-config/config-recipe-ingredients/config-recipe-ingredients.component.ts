@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IRecipe} from '../../../api/model/recipe';
+import {MatDialog} from '@angular/material/dialog';
+import {LinkRecipeService} from '../services/link-recipe.service';
 
 @Component({
   selector: 'app-config-recipe-ingredients',
@@ -9,7 +11,9 @@ import {IRecipe} from '../../../api/model/recipe';
 export class ConfigRecipeIngredientsComponent implements OnInit {
   @Input() recipe: IRecipe;
 
-  constructor() {
+  constructor(
+    private linkService: LinkRecipeService,
+  ) {
   }
 
   ngOnInit(): void {
@@ -28,6 +32,10 @@ export class ConfigRecipeIngredientsComponent implements OnInit {
 
   public removeIngredient(idx: number) {
     this.recipe.ingredients = this.recipe.ingredients.filter((_, index: number) => idx !== index);
+  }
+
+  public linkRecipe() {
+    this.linkService.showDialog(this.recipe);
   }
 
 }

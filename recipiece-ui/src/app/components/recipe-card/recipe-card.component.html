@@ -1,6 +1,8 @@
 <mat-card class="recipe-card">
   <mat-card-title><span [title]="recipe.name">{{ recipe.name }}</span></mat-card-title>
-  <mat-card-subtitle><span [title]="recipe.description">{{ recipe.description }}</span></mat-card-subtitle>
+  <mat-card-subtitle>
+    <span class="card-description" [title]="recipe.description">{{ recipe.description }}</span>
+  </mat-card-subtitle>
   <mat-card-actions>
     <button (click)="viewPressed()" mat-icon-button color="primary">
       <mat-icon>{{ iconClasses['view'] }}</mat-icon>

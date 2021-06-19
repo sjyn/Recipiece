@@ -1,0 +1,20 @@
+<div class="ing-view">
+  <mat-accordion multi>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>Equipment</mat-expansion-panel-header>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>Ingredients</mat-expansion-panel-header>
+      <div class="ings-container">
+        <mat-list>
+          <mat-divider></mat-divider>
+          <ng-container *ngFor="let ing of recipe.ingredients">
+            <mat-list-item>{{ getIngDisplay(ing) }}</mat-list-item>
+            <mat-divider></mat-divider>
+          </ng-container>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

@@ -1,0 +1,19 @@
+<div class="recipe-view-container" *ngIf="!loading">
+  <div class="title-container">
+    <h1>{{ recipe.name }}</h1>
+    <ng-container *ngIf="ownedByUser">
+      <button mat-icon-button (click)="goToEdit()" color="accent">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </ng-container>
+  </div>
+  <p>{{ recipe.description }}</p>
+  <div class="views-container">
+    <div class="steps-container">
+      <app-steps-view [recipe]="recipe"></app-steps-view>
+    </div>
+    <div class="ings-container">
+      <app-ingredients-view [recipe]="recipe"></app-ingredients-view>
+    </div>
+  </div>
+</div>

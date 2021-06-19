@@ -1,0 +1,12 @@
+<div class="step-panels-container">
+  <div class="expand-container">
+    <button mat-button (click)="openAll()">Show All</button>
+    <button mat-button (click)="closeAll()">Hide All</button>
+  </div>
+  <mat-accordion multi>
+    <mat-expansion-panel *ngFor="let step of recipe.steps; let index = index">
+      <mat-expansion-panel-header>Step {{ index + 1 }}</mat-expansion-panel-header>
+      {{ step.content }}
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

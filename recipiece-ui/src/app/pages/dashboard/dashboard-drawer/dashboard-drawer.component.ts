@@ -74,10 +74,10 @@ export class DashboardDrawerComponent implements OnInit {
   }
 
   public copyBookLink(recipeBook: IRecipeBook) {
-    const url = `${environment.serve.protocol}://${environment.host}:${environment.serve.port}/books/${recipeBook._id}`;
-    this.clipboard.copy(url);
-    const message = `A link to ${recipeBook.name} was copied to your clipboard`;
-    this.snackbarService.open(message, 'OK', {duration: 2000});
+    // const url = `${environment.serve.protocol}://${environment.host}:${environment.serve.port}/books/${recipeBook._id}`;
+    // this.clipboard.copy(url);
+    // const message = `A link to ${recipeBook.name} was copied to your clipboard`;
+    // this.snackbarService.open(message, 'OK', {duration: 2000});
   }
 
   public deleteRecipeBook(recipeBook: IRecipeBook) {

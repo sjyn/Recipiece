@@ -69,8 +69,8 @@ export class RecipeCardComponent implements OnInit {
   }
 
   public linkPressed() {
-    const copyText = `${environment.serve.protocol}://${environment.host}:${environment.serve.port}/recipes/${this.recipe._id}`;
-    this.clipboard.copy(copyText);
+    // const copyText = `${environment.serve.protocol}://${environment.host}:${environment.serve.port}/recipes/${this.recipe._id}`;
+    // this.clipboard.copy(copyText);
     this.linked.emit(this.recipe);
   }
 

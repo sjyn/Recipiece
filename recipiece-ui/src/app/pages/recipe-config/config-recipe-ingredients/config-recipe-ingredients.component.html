@@ -1,7 +1,7 @@
 <div class="config-part-container">
   <div class="action-buttons">
     <button mat-stroked-button color="primary" (click)="addIngredient()">Add Ingredient</button>
-    <button mat-button color="accent">Link Recipe</button>
+    <button mat-button color="accent" (click)="linkRecipe()">Link Recipe</button>
   </div>
   <ng-container *ngFor="let ingredient of recipe.ingredients; let index = index">
     <div class="single-ing-container">

@@ -1,0 +1,19 @@
+<h1>Link a Recipe</h1>
+<mat-form-field appearance="standard">
+  <mat-label>Search</mat-label>
+  <input
+    [(ngModel)]="searchTerm"
+    (ngModelChange)="runSearch()"
+    matInput
+    name="search-phrase"
+    placeholder="Recipe Name"/>
+  <mat-icon matPrefix>search</mat-icon>
+</mat-form-field>
+<div class="recipe-search-results">
+  <ng-container *ngFor="let searchResult of (searchResults | async)">
+
+  </ng-container>
+</div>
+<div class="button-container">
+  <button mat-stroked-button color="primary" (click)="close()">Cancel</button>
+</div>

@@ -8,6 +8,15 @@ import {IRecipe} from '../../api/model/recipe';
 @Injectable()
 export class DashboardStateService {
   private _selectedBook: IRecipeBook | undefined;
+  private _page: number;
+
+  public get page(): number {
+    return this._page
+  }
+
+  public set page(page: number) {
+    this._page = page;
+  }
 
   public get selectedBook(): IRecipeBook {
     return this._selectedBook;
@@ -15,7 +24,6 @@ export class DashboardStateService {
 
   public set selectedBook(book: IRecipeBook | undefined) {
     this._selectedBook = book;
-    this.page = 0;
     if (!!this._selectedBook) {
       // load the recipes for this book
       this.loadPageForRecipeBook();
@@ -26,7 +34,6 @@ export class DashboardStateService {
   }
 
   // the recipes to display
-  public page: number;
   public recipes: IRecipe[];
   public loading: boolean;
 
@@ -71,6 +78,15 @@ export class DashboardStateService {
       )
       .subscribe((recipes) => {
         this.recipes = recipes as IRecipe[];
+      });
+  }
+
+  public removeRecipeFromCurrentBook(recipe: IRecipe) {
+    this.selectedBook.recipes = this.selectedBook.recipes.filter((r) => r !== recipe._id);
+    this.recipeBookService.save(this.selectedBook)
+      .pipe(take(1))
+      .subscribe((savedBook: IRecipeBook) => {
+        this.selectedBook = savedBook;
       });
   }
 }

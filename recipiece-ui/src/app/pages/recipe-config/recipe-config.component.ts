@@ -20,7 +20,7 @@ export class RecipeConfigComponent implements OnInit {
   }
 
   public get errorText(): string {
-    if(!!this.recipe) {
+    if (!!this.recipe) {
       if ((this.recipe.name || '').trim() === '') {
         return 'You need to name your recipe.';
       } else if ((this.recipe.description || '').trim() === '') {
@@ -75,13 +75,12 @@ export class RecipeConfigComponent implements OnInit {
             this.editing = true;
             return this.recipeService.getById(recipeId);
           } else {
-            return of({});
+            return of(this.genNewRecipe());
           }
         }),
       )
       .subscribe((recipe) => {
         this.recipe = recipe as IRecipe;
-        console.log(recipe)
         this.loading = false;
       });
   }
@@ -92,6 +91,19 @@ export class RecipeConfigComponent implements OnInit {
       .subscribe(() => {
         this.router.navigate(['dashboard']);
       });
+  }
+
+  private genNewRecipe(): IRecipe {
+    return {
+      name: '',
+      description: '',
+      private: true,
+      steps: [],
+      ingredients: [],
+      advanced: {
+        highAltitude: false,
+      },
+    };
   }
 
 }

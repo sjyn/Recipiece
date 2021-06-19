@@ -7,9 +7,9 @@ import {Model} from './model/model';
 
 export class ApiConnector<T extends Model> {
   constructor(
-    protected client: HttpClient,
-    protected storage: StorageService,
-    protected baseUrl: string,
+    public client: HttpClient,
+    public storage: StorageService,
+    public readonly baseUrl: string,
   ) {
   }
 
@@ -57,7 +57,7 @@ export class ApiConnector<T extends Model> {
     });
   }
 
-  protected getHeaders(): HttpHeaders {
+  public getHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     const session = this.storage.session;
     if (!!session.token && !!session._id) {
@@ -67,7 +67,7 @@ export class ApiConnector<T extends Model> {
     return headers;
   }
 
-  protected getFullUrl(url: string): string {
+  public getFullUrl(url: string): string {
     return `${environment.api.protocol}://${environment.host}:${environment.api.port}/${url}`;
   }
 

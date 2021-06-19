@@ -18,4 +18,25 @@
   <mat-checkbox [(ngModel)]="recipe.private">
     This recipe is private, and cannot be seen by anyone other than me
   </mat-checkbox>
+  <div class="advanced-settings-accordion">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>Advanced Options</mat-expansion-panel-header>
+        <div class="altitude-settings">
+          <mat-checkbox [(ngModel)]="recipe.advanced.highAltitude">
+            This recipe was written for high altitude
+          </mat-checkbox>
+          <mat-form-field *ngIf="recipe.advanced.highAltitude">
+            <mat-select name="alt-select" [(ngModel)]="recipe.advanced.altitude">
+              <mat-option [value]="undefined">Select Altitude</mat-option>
+              <mat-option [value]="3000">3000 - 5000 ft</mat-option>
+              <mat-option [value]="5000">5000 - 7000 ft</mat-option>
+              <mat-option [value]="7000">7000 - 10000 ft</mat-option>
+              <mat-option [value]="10000">10000+ ft</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 </div>

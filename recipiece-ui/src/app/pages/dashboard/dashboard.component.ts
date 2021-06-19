@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public recipeViewed(recipe: IRecipe) {
-
+    this.router.navigate(['recipe', recipe._id]);
   }
 
   public recipeDeleted(recipe: IRecipe) {
@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private removeRecipeFromBook(recipe: IRecipe) {
-
+    this.dashboardState.removeRecipeFromCurrentBook(recipe);
   }
 
   private deleteRecipe(recipe: IRecipe) {

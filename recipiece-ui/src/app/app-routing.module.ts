@@ -25,6 +25,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/user-profile/user-profile.module').then((m) => m.UserProfileModule),
     canActivate: [RequireAuthGuard],
   },
+  {
+    path: 'recipe',
+    loadChildren: () => import('./pages/recipe-view/recipe-view.module').then((m) => m.RecipeViewModule),
+  }
 ];
 
 @NgModule({

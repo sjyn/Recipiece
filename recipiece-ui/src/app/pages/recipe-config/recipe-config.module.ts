@@ -16,6 +16,10 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {MatSelectModule} from '@angular/material/select';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {LinkRecipeModalComponent} from './modals/link-recipe-modal/link-recipe-modal.component';
+import {LinkRecipeService} from './services/link-recipe.service';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
@@ -24,6 +28,7 @@ import {MatSelectModule} from '@angular/material/select';
     ConfigRecipeBasicsComponent,
     ConfigRecipeIngredientsComponent,
     ConfigRecipeStepsComponent,
+    LinkRecipeModalComponent,
   ],
   imports: [
     CommonModule,
@@ -37,9 +42,15 @@ import {MatSelectModule} from '@angular/material/select';
     MatIconModule,
     MatListModule,
     MatSelectModule,
+    MatExpansionModule,
+    MatDialogModule,
   ],
   providers: [
     ConfigManagerService,
+    LinkRecipeService,
+  ],
+  entryComponents: [
+    LinkRecipeModalComponent,
   ],
 })
 export class RecipeConfigModule {
