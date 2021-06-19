@@ -7,7 +7,6 @@ import {CreateRecipeBookModalComponent} from '../modals/create-recipe-book-modal
 import {RecipeBookService} from '../../../api/recipe-book.service';
 import {take} from 'rxjs/operators';
 import {Clipboard} from '@angular/cdk/clipboard';
-import {environment} from '../../../../environments/environment';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {DeleteRecipeBookModalComponent} from '../modals/delete-recipe-book-modal/delete-recipe-book-modal.component';
 import {IRecipe} from '../../../api/model/recipe';
