@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LinkRecipeModalComponent } from './link-recipe-modal.component';
 
@@ -6,7 +6,7 @@ describe('LinkRecipeModalComponent', () => {
   let component: LinkRecipeModalComponent;
   let fixture: ComponentFixture<LinkRecipeModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LinkRecipeModalComponent ]
     })
