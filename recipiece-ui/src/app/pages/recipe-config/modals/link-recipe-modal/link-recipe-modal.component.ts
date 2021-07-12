@@ -1,8 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {IRecipe} from '../../../../api/model/recipe';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {RecipeSearchService} from '../../../../api/search/recipe-search.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-link-recipe-modal',
@@ -13,13 +12,14 @@ export class LinkRecipeModalComponent implements OnInit {
   public searchTerm: string;
 
   public get searchResults(): Observable<IRecipe[]> {
-    return this.recipeSearcher.searchResults;
+    // return this.recipeSearcher.searchResults;
+    return of([]);
   }
 
   constructor(
     public dialogRef: MatDialogRef<LinkRecipeModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IRecipe,
-    private recipeSearcher: RecipeSearchService,
+    // private recipeSearcher: RecipeSearchService,
   ) {
   }
 
@@ -35,7 +35,7 @@ export class LinkRecipeModalComponent implements OnInit {
   }
 
   public runSearch() {
-    this.recipeSearcher.search(this.searchTerm);
+    // this.recipeSearcher.search(this.searchTerm);
   }
 
 }

@@ -4,7 +4,7 @@ from Test import BaseRouteTest
 
 
 class TestUserRoute(BaseRouteTest.BaseRouteTest):
-    def test_CreateUser(self):
+    def _createUser(self):
         body = {
             'email': 'test1@asdf.qwer',
             'password': 'asdfqwer'
@@ -13,7 +13,11 @@ class TestUserRoute(BaseRouteTest.BaseRouteTest):
         self.assertEqual(201, response.status_code)
         responseDict = json.loads(response.data)['data']
         self.assertIsNotNone(responseDict.get('token', None))
-        self.assertIsNotNone(responseDict.get('id', None))
+        self.assertIsNotNone(responseDict.get('_id', None))
+        return responseDict
+
+    def test_CreateUser(self):
+        self._createUser()
 
     def test_LoginUser(self):
         # create the user
@@ -29,10 +33,22 @@ class TestUserRoute(BaseRouteTest.BaseRouteTest):
         self.assertEqual(200, response.status_code)
         responseDict = json.loads(response.data)['data']
         self.assertIsNotNone(responseDict.get('token', None))
-        self.assertIsNotNone(responseDict.get('id', None))
+        self.assertIsNotNone(responseDict.get('_id', None))
+
+    def test_LogoutUser(self):
+        pass
+
+    def test_LogoutUserFailsWithBadTokens(self):
+        pass
+
+    def test_LogoutEverywhere(self):
+        pass
+
+    def test_LogoutEverywhereWithBadTokens(self):
+        pass
 
     def test_DeleteUser(self):
         pass
 
-    def test_DeleteUserWithBadToken(self):
+    def test_DeleteUserFailsWithBadTokens(self):
         pass

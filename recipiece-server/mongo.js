@@ -12,6 +12,7 @@ db.createCollection('StagedUsers');
 db.Users.createIndex({'email': 1}, {unique: true});
 
 // recipe indices
+db.Recipes.createIndex({'name': 1});
 db.Recipes.createIndex({'owner': 1});
 db.Recipes.createIndex({'created': 1});
 

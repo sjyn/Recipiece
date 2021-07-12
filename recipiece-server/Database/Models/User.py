@@ -7,4 +7,3 @@ class User(BaseModel.BaseModel):
     salt: bytes
     nonce: bytes
     preferences: dict
-    created: int

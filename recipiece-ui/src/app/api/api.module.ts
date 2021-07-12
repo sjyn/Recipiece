@@ -1,27 +1,21 @@
-import {Injector, NgModule} from '@angular/core';
-import {environment} from '../../environments/environment';
-import {IndexedDbWrapperService} from './providers/indexed-db-wrapper.service';
-import {HttpWrapperService} from './providers/http-wrapper.service';
-import {HttpClient} from '@angular/common/http';
+import {NgModule} from '@angular/core';
 import {RecipeService} from './recipe.service';
 import {RecipeBookService} from './recipe-book.service';
 import {UserService} from './user.service';
-import {StorageService} from '../services/storage.service';
+import {HttpClientModule} from '@angular/common/http';
+import {CommonModule} from '@angular/common';
+import {ShoppingListService} from './shopping-list.service';
 
 @NgModule({
+  imports: [
+    CommonModule,
+    HttpClientModule,
+  ],
   providers: [
-    {
-      provide: 'DataClient', useFactory: (injector: Injector) => {
-        if(environment.desktop === true) {
-          return new IndexedDbWrapperService();
-        } else {
-          return new HttpWrapperService(injector.get(HttpClient), injector.get(StorageService))
-        }
-      },
-    },
     RecipeService,
     RecipeBookService,
     UserService,
+    ShoppingListService,
   ],
 })
 export class ApiModule {

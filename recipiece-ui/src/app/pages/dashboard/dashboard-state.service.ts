@@ -46,7 +46,7 @@ export class DashboardStateService {
 
   public loadAllRecipesPage() {
     this.loading = true;
-    this.recipeService.listForUser(this.page)
+    this.recipeService.list(this.page)
       .pipe(take(1))
       .subscribe((results: IRecipe[]) => {
         this.recipes = results;
@@ -73,7 +73,7 @@ export class DashboardStateService {
       .pipe(
         take(1),
         switchMap(() => {
-          return this.recipeService.listForUser(this.page);
+          return this.recipeService.list(this.page);
         }),
       )
       .subscribe((recipes) => {

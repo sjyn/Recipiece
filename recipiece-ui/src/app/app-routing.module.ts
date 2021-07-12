@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {RequireAuthGuard} from './guards/require-auth-guard.service';
 import {LoggedInGuard} from './guards/logged-in-guard.service';
 
@@ -28,11 +28,15 @@ const routes: Routes = [
   {
     path: 'recipe',
     loadChildren: () => import('./pages/recipe-view/recipe-view.module').then((m) => m.RecipeViewModule),
-  }
+  },
+  {
+    path: 'shopping-lists',
+    loadChildren: () => import('./pages/shopping-lists/shopping-lists.module').then((m) => m.ShoppingListsModule),
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes, {relativeLinkResolution: 'legacy'})],
   exports: [RouterModule],
 })
 export class AppRoutingModule {

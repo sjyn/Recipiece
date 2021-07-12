@@ -1,20 +1,15 @@
 import {Injectable} from '@angular/core';
 import {IRecipe} from './model/recipe';
-import {HttpClient} from '@angular/common/http';
 import {StorageService} from '../services/storage.service';
-import {CachedApiConnector} from './cached-api-connector';
-import {Observable, of} from 'rxjs';
-import {environment} from '../../environments/environment';
-import {map, tap} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
+import {ApiConnector} from './classes/api-connector';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class RecipeService extends CachedApiConnector<IRecipe> {
+@Injectable()
+export class RecipeService extends ApiConnector<IRecipe> {
   constructor(
     client: HttpClient,
     storage: StorageService,
   ) {
-    super(client, storage, 'recipes');
+    super(storage, client, 'recipes');
   }
 }

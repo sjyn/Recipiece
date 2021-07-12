@@ -1,6 +1,7 @@
 USERS = 'Users'
 RECIPES = 'Recipes'
 RECIPE_BOOKS = 'RecipeBooks'
+SHOPPING_LISTS = 'ShoppingLists'
 USER_SESSIONS = 'UserSessions'
 
 BOOK_RECIPE_LINK = 'BookRecipeLink'

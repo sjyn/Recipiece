@@ -1,30 +1,28 @@
 import {Injectable} from '@angular/core';
-import {ApiConnector} from './api-connector';
 import {IUser} from './model/user';
-import {HttpClient} from '@angular/common/http';
 import {StorageService} from '../services/storage.service';
 import {Observable} from 'rxjs';
-import {map, take, tap} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {ISession} from './model/session';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {getFullUrl} from './classes/utils';
+import {ApiConnector} from './classes/api-connector';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class UserService extends ApiConnector<IUser> {
-
   constructor(
     client: HttpClient,
     storage: StorageService,
   ) {
-    super(client, storage, 'users');
+    super(storage, client, 'users');
   }
 
   public loginUser(email: string, password: string, remember: boolean): Observable<ISession> {
     this.storage.remember = remember;
     const url = `${this.baseUrl}/login`;
     const body = {email, password};
-    const headers = this.getHeaders().delete('Authorization');
-    return this.client.post(this.getFullUrl(url), body, {headers: headers})
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.client.post(getFullUrl(url), body, {headers: headers})
       .pipe(
         map((response: any) => {
           const session = response.data as ISession;
@@ -37,8 +35,7 @@ export class UserService extends ApiConnector<IUser> {
   public createUser(user: Partial<IUser>, remember: boolean): Observable<ISession> {
     this.storage.remember = remember;
     const url = `${this.baseUrl}/`;
-    const headers = this.getHeaders().delete('Authorization');
-    return this.client.post(this.getFullUrl(url), user, {headers: headers})
+    return this.client.post(this.getFullUrl(url), user, {headers: this.getHeaders()})
       .pipe(
         map((response: any) => {
           const session = response.data as ISession;
@@ -49,7 +46,7 @@ export class UserService extends ApiConnector<IUser> {
   }
 
   public logoutUser(): Observable<any> {
-    const url = this.getFullUrl(`${this.baseUrl}/logout`);
+    const url = getFullUrl(`${this.baseUrl}/logout`);
     return this.client.post(url, null, {headers: this.getHeaders()})
       .pipe(
         tap(() => {
@@ -59,7 +56,7 @@ export class UserService extends ApiConnector<IUser> {
   }
 
   public logoutEverywhere(): Observable<any> {
-    const url = this.getFullUrl(`${this.baseUrl}/logout-everywhere`);
+    const url = getFullUrl(`${this.baseUrl}/logout-everywhere`);
     return this.client.post(url, null, {headers: this.getHeaders()})
       .pipe(
         tap(() => {
@@ -69,17 +66,8 @@ export class UserService extends ApiConnector<IUser> {
   }
 
   public changePassword(oldPassword: string, newPassword: string): Observable<any> {
-    const url = this.getFullUrl(`${this.baseUrl}/${this.storage.session._id}/password-change`);
+    const url = getFullUrl(`${this.baseUrl}/${this.storage.session._id}/password-change`);
     const body = {new: newPassword, old: oldPassword};
     return this.client.post(url, body, {headers: this.getHeaders()});
-  }
-
-  public delete(entityId: string): Observable<any> {
-    return super.delete(entityId)
-      .pipe(
-        tap(() => {
-          this.storage.logoutUser();
-        }),
-      );
   }
 }

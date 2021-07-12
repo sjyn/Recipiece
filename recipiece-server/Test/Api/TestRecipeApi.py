@@ -1,5 +1,5 @@
 from Api import UserApi, RecipeApi
-from Database import DatabaseConstants
+from Database import DatabaseConstants, Models
 from Test import BaseTestCase
 
 
@@ -36,7 +36,7 @@ class TestRecipeApi(BaseTestCase.BaseTestCase):
                 }
             ]
         }
-        recipe = RecipeApi.RecipeApi.create(recipeBody)
+        recipe = RecipeApi.RecipeApi.create(recipeBody, user['_id'])
         self.assertEqual('Test Recipe', recipe['name'])
         self.assertEqual('A really cool recipe that we can test with', recipe['description'])
         self.assertEqual(3, len(recipe['steps']))
@@ -74,22 +74,21 @@ class TestRecipeApi(BaseTestCase.BaseTestCase):
         user = UserApi.UserApi.create('getForUser@asdf.qwer', 'asdfqwer')
         maxLim = int(DatabaseConstants.PAGE_SIZE + (DatabaseConstants.PAGE_SIZE / 2))
         for i in range(0, maxLim):
-            RecipeApi.RecipeApi.create({
-                'name': f'Test Recipe {i}',
-                'description': f'Test Des {i}',
-                'owner': user['_id'],
-                'private': False,
-                'ingredients': [{
+            RecipeApi.RecipeApi.create(Models.Recipe(
+                name=f'Test Recipe {i}',
+                description=f'Test Des {i}',
+                owner=user['_id'],
+                private=False,
+                ingredients=[{
                     'name': f'ing {i}',
                     'amount': '100',
                     'unit': 'grams',
                     'idx': 0
-                }],
-                'steps': [{
+                }], steps=[{
                     'content': 'asdf' * 20,
                     'idx': 0
                 }]
-            })
+            ), user['_id'])
 
         firstPage = RecipeApi.RecipeApi.listForUser(user['_id'], 0, True)
         self.assertEqual(DatabaseConstants.PAGE_SIZE, len(firstPage))
@@ -100,21 +99,20 @@ class TestRecipeApi(BaseTestCase.BaseTestCase):
     def test_GetForUserWithPrivateRecipes(self):
         user = UserApi.UserApi.create('getForUser@asdf.qwer', 'asdfqwer')
         for i in range(0, DatabaseConstants.PAGE_SIZE):
-            RecipeApi.RecipeApi.create({
-                'name': f'Test Recipe {i}',
-                'description': f'Test Des {i}',
-                'owner': user['_id'],
-                'private': i % 2 == 0,
-                'ingredients': [{
+            RecipeApi.RecipeApi.create(Models.Recipe(
+                name=f'Test Recipe {i}',
+                description=f'Test Des {i}',
+                owner=user['_id'],
+                private=i % 2 == 0,
+                ingredients=[{
                     'name': f'ing {i}',
                     'amount': '100',
                     'unit': 'grams',
                     'idx': 0
-                }],
-                'steps': [{
+                }], steps=[{
                     'content': 'asdf' * 20,
                     'idx': 0
                 }]
-            })
+            ), user['_id'])
         firstPage = RecipeApi.RecipeApi.listForUser(user['_id'], 0, allowPrivate=False)
         self.assertEqual(int(DatabaseConstants.PAGE_SIZE / 2), len(firstPage))

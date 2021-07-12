@@ -41,4 +41,4 @@ class BaseRouteTest(BaseTestCase.BaseTestCase):
         }
         response = self.post('users/', testUser)
         responseJson = json.loads(response.data)['data']
-        return responseJson['token'], responseJson['id']
+        return responseJson['token'], responseJson['_id']

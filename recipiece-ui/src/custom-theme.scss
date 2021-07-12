@@ -11,20 +11,33 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$recipiece-ui-primary: mat.define-palette(mat.$purple-palette, 400, 600, 800);
-$recipiece-ui-accent: mat.define-palette(mat.$lime-palette, 800);
+$recipiece-ui-primary: mat.define-palette(mat.$deep-purple-palette, 400, 600, 800);
+$recipiece-ui-accent: mat.define-palette(mat.$teal-palette, 800);
 
 // The warn palette is optional (defaults to red).
-$recipiece-ui-warn: mat.define-palette(mat.$pink-palette, 600);
+$recipiece-ui-warn: mat.define-palette(mat.$pink-palette, 800);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $recipiece-ui-light-theme: mat.define-light-theme($recipiece-ui-primary, $recipiece-ui-accent, $recipiece-ui-warn);
 
+$recipiece-ui-dark-theme: mat.define-dark-theme($recipiece-ui-primary, $recipiece-ui-accent, $recipiece-ui-warn);
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($recipiece-ui-light-theme);
+@include mat.all-component-themes($recipiece-ui-dark-theme);
 
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: #303030;
+}
+
+* {
+  color: white;
+}

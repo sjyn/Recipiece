@@ -10,6 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MatFabMenuModule} from '@angular-material-extensions/fab-menu';
 import {AuthInterceptorService} from './services/auth-interceptor.service';
+import {ApiModule} from './api/api.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {AuthInterceptorService} from './services/auth-interceptor.service';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    ApiModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,

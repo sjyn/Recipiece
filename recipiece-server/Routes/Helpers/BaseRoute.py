@@ -1,3 +1,4 @@
+import urllib
 from typing import Type, Union
 
 import flask
@@ -110,15 +111,19 @@ class ListableRoute(BaseRoute):
     @route('/list/<userId>', methods=['GET'])
     def listForUser(self, userId):
         requestedPage = int(flask.request.args.get('page', 0))
+
+        queryDict = flask.request.args.get('query', None)
+        if queryDict is not None:
+            queryDict = dict(urllib.parse.parse_qsl(queryDict))
         if self.requireAuth:
-            response = self.__listForUserAuth(userId, requestedPage)
+            response = self.__listForUserAuth(userId, requestedPage, queryDict)
         else:
-            response = self._listForUser(userId, requestedPage)
+            response = self._listForUser(userId, requestedPage, queryDict)
         return self.makeResponse(response, currentPage=requestedPage, nextPage=requestedPage + 1)
 
-    def _listForUser(self, userId: str, page: int) -> [dict]:
-        return self.api.listForUser(userId, page)
+    def _listForUser(self, userId: str, page: int, queryDict: dict = None) -> [dict]:
+        return self.api.listForUser(userId, page, queryDict)
 
     @authorized
-    def __listForUserAuth(self, userId: str, page: int) -> [dict]:
-        return self._listForUser(userId, page)
+    def __listForUserAuth(self, userId: str, page: int, queryDict: dict = None) -> [dict]:
+        return self._listForUser(userId, page, queryDict)

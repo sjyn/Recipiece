@@ -1,13 +1,14 @@
+import base64
 import time
-from asyncio import Task
 from threading import Thread
 
 from pymongo.collection import Collection
 
-from Api import BaseApi, SessionApi
+from Api import BaseApi, SessionApi, ShoppingListApi
 from Api.Exceptions import ApiExceptions
 from Api.Tasks import TaskRunner, UserTasks
 from Database import DatabaseConstants, Models
+from Database.Models import ShoppingList
 from Util import Encryption
 
 
@@ -16,7 +17,21 @@ class UserApi(BaseApi.BaseApi[Models.User]):
 
     @classmethod
     def changePasswordForUser(cls, userId: str, oldPassword: str, newPassword: str):
-        pass
+        user = cls.getById(userId)
+        if user is None:
+            raise ApiExceptions.NotFoundException()
+        # verify the old password
+        expectedPassword = user['password']
+        expectedSalt = user['salt']
+        expectedNonce = user['nonce']
+        if Encryption.comparePasswords(expectedPassword, expectedNonce, expectedSalt, oldPassword):
+            decodedSalt = base64.b64decode(expectedSalt)
+            decodedNonce = base64.b64decode(expectedNonce)
+            passwordHash, _, _ = Encryption.encryptPassword(newPassword, decodedSalt, decodedNonce)
+            user['password'] = passwordHash
+            cls.update(userId, user)
+        else:
+            raise ApiExceptions.ForbiddenException()
 
     @classmethod
     def create(cls, username: str, password: str) -> Models.User:
@@ -30,7 +45,9 @@ class UserApi(BaseApi.BaseApi[Models.User]):
             created=int(time.time()),
             preferences={},
         )
-        return cls.database.create(cls._TABLE_NAME, userDict)
+        createdUser = cls.database.create(cls._TABLE_NAME, userDict)
+        cls._createDefaultShoppingList(createdUser['_id'])
+        return createdUser
 
     @classmethod
     def delete(cls, entityId: str) -> Thread:
@@ -73,3 +90,8 @@ class UserApi(BaseApi.BaseApi[Models.User]):
         if found is not None:
             found['_id'] = str(found['_id'])
         return found
+
+    @classmethod
+    def _createDefaultShoppingList(cls, userId: str):
+        defaultList = ShoppingList(name='Groceries', items=[], owner=userId)
+        ShoppingListApi.ShoppingListApi.create(defaultList, userId)

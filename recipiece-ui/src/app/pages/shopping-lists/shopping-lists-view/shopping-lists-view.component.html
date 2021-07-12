@@ -1,0 +1,16 @@
+<div class="title-container">
+  <h1>Your Shopping Lists</h1>
+  <button (click)="createNewList()" color="primary" mat-icon-button><mat-icon>add</mat-icon></button>
+</div>
+<ng-container *ngIf="($lists | async) as lists">
+  <ng-container *ngIf="lists.length > 0">
+    <mat-selection-list [multiple]="false">
+      <mat-list-option *ngFor="let list of lists" (click)="goToList(list._id)">
+        {{ list.name }}
+      </mat-list-option>
+    </mat-selection-list>
+  </ng-container>
+  <div class="no-lists-container" *ngIf="lists.length === 0">
+    <p>You don't have any shopping lists yet. Press the + button to create a new one.</p>
+  </div>
+</ng-container>

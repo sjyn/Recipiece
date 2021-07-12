@@ -12,7 +12,7 @@ class TestSessionApi(BaseTestCase.BaseTestCase):
             'owner': user['_id'],
             'created': time.time()
         }
-        sessionDict = SessionApi.SessionApi.create(sessionDict)
+        sessionDict = SessionApi.SessionApi.create(sessionDict, user['_id'])
 
         serialized = SessionApi.SessionApi.serializeSession(sessionDict)
         validated = SessionApi.SessionApi.validateSession(serialized)
@@ -24,7 +24,7 @@ class TestSessionApi(BaseTestCase.BaseTestCase):
             'owner': user['_id'],
             'created': time.time()
         }
-        sessionDict = SessionApi.SessionApi.create(sessionDict)
+        sessionDict = SessionApi.SessionApi.create(sessionDict, user['_id'])
         serialized = SessionApi.SessionApi.serializeSession(sessionDict)
 
         serialized = 'a' + serialized[1:]

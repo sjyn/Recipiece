@@ -76,6 +76,18 @@ class TestUserApi(BaseTestCase.BaseTestCase):
         sessions = list(sessions)
         self.assertEquals(0, len(sessions))
 
+    def test_changePassword(self):
+        initialUser = self._createUser()
+        # create a session for the user
+        UserApi.UserApi.loginUser(initialUser['email'], self._DEFAULT_PASS)
+        newPass = f'{self._DEFAULT_PASS}1!'
+        UserApi.UserApi.changePasswordForUser(initialUser['_id'], self._DEFAULT_PASS, newPass)
+
+        fetchedUser = UserApi.UserApi.getById(initialUser['_id'])
+        self.assertEqual(initialUser['salt'], fetchedUser['salt'])
+        self.assertEqual(initialUser['nonce'], fetchedUser['nonce'])
+        self.assertNotEqual(initialUser['password'], fetchedUser['password'])
+
     def test_DeleteUser(self):
         user = self._createUser()
         createdId = user['_id']

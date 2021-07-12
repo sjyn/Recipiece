@@ -43,8 +43,8 @@ class BaseApi(Generic[T]):
 
 class UserOwnedApi(BaseApi[T]):
     @classmethod
-    def listForUser(cls, userId: IdType, page: int) -> [T]:
-        query = {'owner': userId}
+    def listForUser(cls, userId: IdType, page: int, queryDict: dict, *args, **kwargs) -> [T]:
+        query = cls._buildListQuery(userId, queryDict)
         numToSkip = page * DatabaseConstants.PAGE_SIZE
         cursor: Cursor = cls.database.client[cls._TABLE_NAME].find(
             filter=query,
@@ -52,3 +52,12 @@ class UserOwnedApi(BaseApi[T]):
             limit=DatabaseConstants.PAGE_SIZE
         )
         return list(cursor)
+
+    @classmethod
+    def create(cls, entity: T, userId: str) -> T:
+        entity['owner'] = userId
+        return super().create(entity, userId)
+
+    @classmethod
+    def _buildListQuery(cls, userId: str, queryDict: dict = None):
+        return {'owner': userId}

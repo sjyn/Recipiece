@@ -19,6 +19,11 @@ class RecipeIngredient(TypedDict, total=False):
     unit: Optional[str]
 
 
+class RecipeAdvancedOptions(TypedDict, total=False):
+    highAltitude: Optional[bool]
+    altitude: Optional[int]
+
+
 class Recipe(BaseModel.UserOwnedModel, total=False):
     name: str
     description: str
@@ -26,3 +31,4 @@ class Recipe(BaseModel.UserOwnedModel, total=False):
     steps: List[RecipeStep]
     ingredients: List[RecipeIngredient]
     links: Optional[List[str]]
+    advanced: Optional[RecipeAdvancedOptions]

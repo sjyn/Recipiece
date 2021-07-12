@@ -20,6 +20,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {LinkRecipeModalComponent} from './modals/link-recipe-modal/link-recipe-modal.component';
 import {LinkRecipeService} from './services/link-recipe.service';
 import {MatDialogModule} from '@angular/material/dialog';
+import { ConfigRecipeEquipmentComponent } from './config-recipe-equipment/config-recipe-equipment.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     ConfigRecipeIngredientsComponent,
     ConfigRecipeStepsComponent,
     LinkRecipeModalComponent,
+    ConfigRecipeEquipmentComponent,
   ],
   imports: [
     CommonModule,

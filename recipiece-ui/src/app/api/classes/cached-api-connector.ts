@@ -1,9 +1,9 @@
 import {ApiConnector} from './api-connector';
-import {Model} from './model/model';
+import {Model} from '../model/model';
 import {Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
-import {IRecipe} from './model/recipe';
-import {environment} from '../../environments/environment';
+import {IRecipe} from '../model/recipe';
+import {environment} from '../../../environments/environment';
 
 export class CachedApiConnector<T extends Model> extends ApiConnector<T> {
   protected cache: Map<number, T> = new Map<number, T>();

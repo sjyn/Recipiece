@@ -41,7 +41,7 @@ export class DashboardDrawerComponent implements OnInit {
 
   private loadBookPage() {
     this.loading = true;
-    this.recipeBookService.listForUser(this.currentPage)
+    this.recipeBookService.list(this.currentPage)
       .pipe(take(1))
       .subscribe((results: IRecipeBook[]) => {
         this.recipeBooks = results;

@@ -1,0 +1,40 @@
+<div class="shopping-list-container">
+  <ng-container *ngIf="shoppingList">
+    <form>
+      <mat-form-field class="name-form-field">
+        <input
+          matInput
+          maxlength="50"
+          class="name-input"
+          name="list-name"
+          [(ngModel)]="shoppingList.name"/>
+      </mat-form-field>
+      <button mat-icon-button (click)="addItem()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="moreOptions">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #moreOptions="matMenu">
+        <button mat-menu-item [matMenuTriggerFor]="sortOptions">Sort By</button>
+        <button mat-menu-item (click)="clearAllDoneItems()">Clear All Done Items</button>
+        <button mat-menu-item (click)="clearAllItems()">Clear All Items</button>
+      </mat-menu>
+      <mat-menu #sortOptions="matMenu">
+        <button mat-menu-item (click)="sortType = 'custom'">
+          Custom Order
+        </button>
+        <button mat-menu-item (click)="sortType = 'category'">
+          Categories
+        </button>
+      </mat-menu>
+      <ng-container *ngIf="sortType === 'custom'">
+        <app-ordinal-view [list]="shoppingList.items"></app-ordinal-view>
+      </ng-container>
+
+      <ng-container *ngIf="sortType === 'category'">
+        <app-category-view [list]="shoppingList.items"></app-category-view>
+      </ng-container>
+    </form>
+  </ng-container>
+</div>

@@ -1,4 +1,5 @@
 import {Model} from './model';
+import {IEquipment} from './equipment';
 
 export interface IRecipe extends Model {
   _id?: string;
@@ -7,6 +8,7 @@ export interface IRecipe extends Model {
   private: boolean;
   steps: IRecipeStep[];
   ingredients: IRecipeIngredient[];
+  equipment?: IEquipment[],
   links?: string[];
   owner?: string;
   advanced: IRecipeAdvancedOptions;

@@ -4,15 +4,17 @@ from flask_cors import CORS
 
 from Api import SessionApi
 from Api.Exceptions import ApiExceptions
-from Routes import UserRoute, RecipeRoute, RecipeBookRoute
+from Routes import UserRoute, RecipeRoute, RecipeBookRoute, DevRoute, ShoppingListRoute
 from Routes.Helpers import ResponseEncoder
 
 app = Flask(__name__)
 app.json_encoder = ResponseEncoder.ResponseEncoder
 CORS(app)
+DevRoute.DevRoute.register(app, route_base='/dev/')
 UserRoute.UserRoute.register(app, route_base='/users/')
 RecipeRoute.RecipeRoute.register(app, route_base='/recipes/')
 RecipeBookRoute.RecipeBookRoute.register(app, route_base='/books/')
+ShoppingListRoute.ShoppingListRoute.register(app, '/shopping-lists/')
 
 
 @app.before_request
