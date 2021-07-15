@@ -1,4 +1,4 @@
-from typing import TypedDict, List
+from typing import TypedDict, List, Optional
 
 from Database.Models import BaseModel
 
@@ -10,8 +10,9 @@ class ShoppingListItem(TypedDict, total=False):
     category: str
     ordinal: int
     completed: bool
+    recipe: Optional[str]
 
 
 class ShoppingList(BaseModel.UserOwnedModel, total=False):
     name: str
-    items: List[ShoppingListItem]
+    listItems: List[ShoppingListItem]

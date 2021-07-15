@@ -7,10 +7,11 @@ export interface IShoppingListItem {
   category: string;
   ordinal: number;
   completed: boolean;
+  recipe?: string;
 }
 
 export interface IShoppingList extends Model {
   _id?: string;
   name: string;
-  items: IShoppingListItem[];
+  listItems: IShoppingListItem[];
 }

@@ -4,9 +4,22 @@ import {Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {IRecipe} from '../model/recipe';
 import {environment} from '../../../environments/environment';
+import {StorageService} from '../../services/storage.service';
+import {HttpClient} from '@angular/common/http';
 
 export class CachedApiConnector<T extends Model> extends ApiConnector<T> {
-  protected cache: Map<number, T> = new Map<number, T>();
+  protected cache: Map<string, T> = new Map<string, T>();
+  protected fetchedPages: string[];
+  private readonly PAGE_SIZE = 100;
+
+  constructor(
+    storage: StorageService,
+    client: HttpClient,
+    baseUrl: string,
+  ) {
+    super(storage, client, baseUrl);
+    this.fetchedPages = [];
+  }
 
   getById(id: string): Observable<Partial<T>> {
     const cachedEntity = this.cache[id];
@@ -25,13 +38,22 @@ export class CachedApiConnector<T extends Model> extends ApiConnector<T> {
     }
   }
 
+  protected create(entity: Partial<T>): Observable<Partial<T>> {
+    return super.create(entity)
+      .pipe(
+        tap((createdEntity) => {
+          this.fetchedPages.push(createdEntity._id);
+          this.cache[createdEntity._id.toString()] = createdEntity;
+        }),
+      );
+  }
+
   update(entity: Partial<T>): Observable<Partial<T>> {
     return super.update(entity)
       .pipe(
         tap((savedEntity) => {
           if (this.cacheEntity(savedEntity)) {
-            // @ts-ignore
-            this.cache[savedEntity._id] = savedEntity;
+            this.cache[savedEntity._id.toString()] = savedEntity;
           }
         }),
       );
@@ -46,32 +68,35 @@ export class CachedApiConnector<T extends Model> extends ApiConnector<T> {
       );
   }
 
-  public listForUser(page: number): Observable<Partial<T>[]> {
-    // order from the server is consistent, so we can rely on what's in the cache
-    // if we have more than the upper page limit, we already have that page
-    const ownedRecipes = Object.values(this.cache);
-    const lowerBound = (page) * environment.pageSize;
-    if (ownedRecipes.length > lowerBound) {
-      const upperBound = (page + 1) * environment.pageSize;
-      return of(ownedRecipes.slice(lowerBound, upperBound));
-    } else {
-      const userId = this.storage.session?._id;
-      const url = this.getFullUrl(`${this.baseUrl}/list/${userId}`);
-      const params = {page: page.toString(10)};
-      return this.client.get(url, {headers: this.getHeaders(), params})
+  public list(page: number, query?: any): Observable<(Partial<T> | T)[]> {
+    if (!!query) {
+      // client side caching is gonna be hard, so hit the server instead
+      // @TODO -- do we want to put the results into the cache?
+      return super.list(page, query);
+    }
+    const lowerSlice = page * this.PAGE_SIZE;
+    const upperSlice = (page + 1) * this.PAGE_SIZE;
+    const keysSlice = this.fetchedPages.slice(lowerSlice, upperSlice);
+
+    if (keysSlice.length === 0) {
+      return super.list(page, query)
         .pipe(
-          map((response: any) => {
-            return response.data as Partial<T>[];
-          }),
           tap((results) => {
-            results.forEach((r) => {
-              if (this.cacheEntity(r)) {
-                // @ts-ignore
-                this.cache[r._id] = r;
-              }
+            results.forEach((entity) => {
+              // put the keys into the cache
+              this.cache[entity._id.toString()] = entity;
             });
+            // sparsely populate the keys
+            for (let i = 0; i < Math.min(results.length, this.PAGE_SIZE); i++) {
+              this.fetchedPages[lowerSlice + i] = results[i]._id;
+            }
           }),
         );
+    } else {
+      const entities = keysSlice.map((entityId) => {
+        return this.cache[entityId];
+      });
+      return of(entities);
     }
   }
 
@@ -80,6 +105,6 @@ export class CachedApiConnector<T extends Model> extends ApiConnector<T> {
   }
 
   public clearCache() {
-    this.cache = new Map<number, T>();
+    this.cache = new Map();
   }
 }

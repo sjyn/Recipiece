@@ -6,10 +6,10 @@ import {IRecipe} from './model/recipe';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {getFullUrl} from './classes/utils';
-import {ApiConnector} from './classes/api-connector';
+import {CachedApiConnector} from './classes/cached-api-connector';
 
 @Injectable()
-export class RecipeBookService extends ApiConnector<IRecipeBook> {
+export class RecipeBookService extends CachedApiConnector<IRecipeBook> {
   constructor(
     client: HttpClient,
     storage: StorageService,
@@ -19,10 +19,7 @@ export class RecipeBookService extends ApiConnector<IRecipeBook> {
 
   public listRecipesForBook(bookId: string, page: number): Observable<Partial<IRecipe>[]> {
     const url = getFullUrl(`${this.baseUrl}/${bookId}/list`);
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${this.storage.session.token}`);
-    const options = {headers: headers, params: {page: page.toString()}};
+    const options = {headers: this.getHeaders(), params: {page: page.toString()}};
     return this.client.get(url, options)
       .pipe(
         map((result: any) => {

@@ -1,5 +1,5 @@
 <div class="shopping-list-container">
-  <ng-container *ngIf="shoppingList">
+  <ng-container *ngIf="listHelper.shoppingList">
     <form>
       <mat-form-field class="name-form-field">
         <input
@@ -7,34 +7,41 @@
           maxlength="50"
           class="name-input"
           name="list-name"
-          [(ngModel)]="shoppingList.name"/>
+          [(ngModel)]="listHelper.shoppingList.name"/>
       </mat-form-field>
-      <button mat-icon-button (click)="addItem()">
-        <mat-icon>add</mat-icon>
-      </button>
-      <button mat-icon-button [matMenuTriggerFor]="moreOptions">
-        <mat-icon>more_vert</mat-icon>
-      </button>
+      <div class="list-action-buttons">
+        <button mat-icon-button (click)="addItem()">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="moreOptions">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!listHelper.canSave()"
+          (click)="save()">
+          Save
+        </button>
+      </div>
       <mat-menu #moreOptions="matMenu">
         <button mat-menu-item [matMenuTriggerFor]="sortOptions">Sort By</button>
         <button mat-menu-item (click)="clearAllDoneItems()">Clear All Done Items</button>
         <button mat-menu-item (click)="clearAllItems()">Clear All Items</button>
+        <button mat-menu-item (click)="deleteList()">Delete List</button>
       </mat-menu>
       <mat-menu #sortOptions="matMenu">
-        <button mat-menu-item (click)="sortType = 'custom'">
+        <button mat-menu-item routerLink="./all">
           Custom Order
         </button>
-        <button mat-menu-item (click)="sortType = 'category'">
+        <button mat-menu-item routerLink="./recipes">
+          Recipes
+        </button>
+        <button mat-menu-item routerLink="./categories">
           Categories
         </button>
       </mat-menu>
-      <ng-container *ngIf="sortType === 'custom'">
-        <app-ordinal-view [list]="shoppingList.items"></app-ordinal-view>
-      </ng-container>
-
-      <ng-container *ngIf="sortType === 'category'">
-        <app-category-view [list]="shoppingList.items"></app-category-view>
-      </ng-container>
+      <router-outlet></router-outlet>
     </form>
   </ng-container>
 </div>

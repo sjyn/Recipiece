@@ -93,5 +93,5 @@ class UserApi(BaseApi.BaseApi[Models.User]):
 
     @classmethod
     def _createDefaultShoppingList(cls, userId: str):
-        defaultList = ShoppingList(name='Groceries', items=[], owner=userId)
+        defaultList = ShoppingList(name='Groceries', listItems=[], owner=userId)
         ShoppingListApi.ShoppingListApi.create(defaultList, userId)

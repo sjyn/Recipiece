@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ShoppingListService} from '../../../api/shopping-list.service';
-import {Subject} from 'rxjs';
+import {ReplaySubject, Subject} from 'rxjs';
 import {IShoppingList} from '../../../api/model/shopping-list';
 import {take} from 'rxjs/operators';
 import {Router} from '@angular/router';
@@ -18,7 +18,7 @@ export class ShoppingListsViewComponent implements OnInit {
     private shoppingListApi: ShoppingListService,
     private router: Router,
   ) {
-    this.$lists = new Subject();
+    this.$lists = new ReplaySubject();
     this.currentPage = 0;
   }
 
@@ -37,7 +37,7 @@ export class ShoppingListsViewComponent implements OnInit {
   public createNewList() {
     const newList: Partial<IShoppingList> = {
       name: 'New List',
-      items: [],
+      listItems: [],
     };
     this.shoppingListApi.save(newList)
       .pipe(take(1))

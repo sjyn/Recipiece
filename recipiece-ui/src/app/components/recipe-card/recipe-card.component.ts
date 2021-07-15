@@ -2,6 +2,12 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IRecipe} from '../../api/model/recipe';
 import {Clipboard} from '@angular/cdk/clipboard';
 import {environment} from '../../../environments/environment';
+import {of} from 'rxjs';
+import {IShoppingList} from '../../api/model/shopping-list';
+import {switchMap, take} from 'rxjs/operators';
+import {MatDialog} from '@angular/material/dialog';
+import {AddToShoppingListCloseBundle, AddToShoppingListComponent} from './add-to-shopping-list/add-to-shopping-list.component';
+import {RecipeCardManagerService} from './recipe-card-manager.service';
 
 
 export interface RecipeCardIconClasses {
@@ -37,7 +43,9 @@ export class RecipeCardComponent implements OnInit {
   };
 
   constructor(
+    public recipeCardManager: RecipeCardManagerService,
     private clipboard: Clipboard,
+    private dialog: MatDialog,
   ) {
     this.edited = new EventEmitter<IRecipe>();
     this.deleted = new EventEmitter<IRecipe>();
@@ -69,9 +77,31 @@ export class RecipeCardComponent implements OnInit {
   }
 
   public linkPressed() {
-    // const copyText = `${environment.serve.protocol}://${environment.host}:${environment.serve.port}/recipes/${this.recipe._id}`;
-    // this.clipboard.copy(copyText);
+    const copyText = `${environment.serve.protocol}://${environment.host}:${environment.serve.port}/recipes/${this.recipe._id}`;
+    this.clipboard.copy(copyText);
     this.linked.emit(this.recipe);
+  }
+
+  public addToShoppingList(list: IShoppingList) {
+    const dialogRef = this.dialog.open(AddToShoppingListComponent, {
+      width: '400px',
+      data: {
+        list: list,
+        recipe: this.recipe,
+      },
+    });
+    dialogRef.afterClosed()
+      .pipe(
+        take(1),
+        switchMap((result: AddToShoppingListCloseBundle) => {
+          if (result.saved) {
+            return this.recipeCardManager.saveList(result.list);
+          } else {
+            return of({});
+          }
+        }),
+      )
+      .subscribe();
   }
 
 }

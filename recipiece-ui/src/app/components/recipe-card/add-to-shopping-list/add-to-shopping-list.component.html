@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>Add to {{ shoppingList.name }}</h1>
+<div mat-dialog-content>
+  <div class="title-container">
+    <h2 class="ing-title">Ingredients</h2>
+    <mat-form-field>
+      <mat-label>Scale</mat-label>
+      <input
+        class="scale-input"
+        matInput
+        name="scale"
+        type="number"
+        [(ngModel)]="scale"/>
+    </mat-form-field>
+  </div>
+  <ng-container *ngFor="let ingredientWrapper of ingredients; let index = index">
+    <div class="ingredients-list">
+      <mat-list>
+        <mat-list-item>
+          <mat-checkbox
+            class="check-container"
+            name="ing-selected-{{index}}"
+            [(ngModel)]="ingredientWrapper.selected">
+          </mat-checkbox>
+          <span class="ingredient-name">{{ingredientWrapper.ingredient.name}}</span>
+          <span class="ingredient-amount">{{ingredientWrapper.ingredient.amount * scale}}</span>
+          <span class="ingredient-amount" *ngIf="!!ingredientWrapper.ingredient.unit">
+            {{ingredientWrapper.ingredient.unit}}
+          </span>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </ng-container>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button (click)="cancel()">Cancel</button>
+  <button mat-stroked-button (click)="close()">Save</button>
+</div>
+

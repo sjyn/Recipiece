@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrdinalViewComponent } from './ordinal-view.component';
+import { AddToShoppingListComponent } from './add-to-shopping-list.component';
 
-describe('OrdinalViewComponent', () => {
-  let component: OrdinalViewComponent;
-  let fixture: ComponentFixture<OrdinalViewComponent>;
+describe('AddToShoppingListComponent', () => {
+  let component: AddToShoppingListComponent;
+  let fixture: ComponentFixture<AddToShoppingListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OrdinalViewComponent ]
+      declarations: [ AddToShoppingListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrdinalViewComponent);
+    fixture = TestBed.createComponent(AddToShoppingListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

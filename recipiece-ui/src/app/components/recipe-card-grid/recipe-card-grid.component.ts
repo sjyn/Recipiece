@@ -1,11 +1,18 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IRecipe} from '../../api/model/recipe';
 import {RecipeCardIconClasses} from '../recipe-card/recipe-card.component';
+import {RecipeCardManagerService} from '../recipe-card/recipe-card-manager.service';
+import {ShoppingListService} from '../../api/shopping-list.service';
+import {take} from 'rxjs/operators';
+import {IShoppingList} from '../../api/model/shopping-list';
 
 @Component({
   selector: 'app-recipe-card-grid',
   templateUrl: './recipe-card-grid.component.html',
   styleUrls: ['./recipe-card-grid.component.sass'],
+  providers: [
+    RecipeCardManagerService,
+  ],
 })
 export class RecipeCardGridComponent implements OnInit {
   @Input() recipes: IRecipe[];
@@ -17,7 +24,10 @@ export class RecipeCardGridComponent implements OnInit {
   @Output() deleted: EventEmitter<IRecipe>;
   @Output() copied: EventEmitter<IRecipe>;
 
-  constructor() {
+  constructor(
+    private shoppingListApi: ShoppingListService,
+    private recipeCardManager: RecipeCardManagerService,
+  ) {
     this.viewed = new EventEmitter<IRecipe>();
     this.edited = new EventEmitter<IRecipe>();
     this.deleted = new EventEmitter<IRecipe>();
@@ -25,6 +35,11 @@ export class RecipeCardGridComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.shoppingListApi.list(0)
+      .pipe(take(1))
+      .subscribe((results) => {
+        this.recipeCardManager.$shoppingLists.next(results as IShoppingList[]);
+      });
   }
 
   public recipeEdited(recipe: IRecipe) {
@@ -44,7 +59,7 @@ export class RecipeCardGridComponent implements OnInit {
   }
 
   public dragStart(event, recipe: IRecipe) {
-    event.dataTransfer.setData("text", JSON.stringify(recipe));
+    event.dataTransfer.setData('text', JSON.stringify(recipe));
   }
 
 }
