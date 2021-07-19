@@ -1,3 +1,4 @@
+import re
 import time
 
 from pymongo.cursor import Cursor
@@ -26,9 +27,20 @@ class RecipeApi(BaseApi.UserOwnedApi[Models.Recipe]):
         if not allowPrivate:
             query['private'] = False
         if queryDict is not None:
-            nameFilter = queryDict.get('name', '')
-            if nameFilter.strip() != '':
-                query['$text'] = {'$search': nameFilter}
+            nameFilter = queryDict.get('name', '').strip()
+            if nameFilter != '':
+                # run a case-insensitive match on the name
+                query['name'] = {
+                    '$regex': nameFilter,
+                    '$options': 'i'
+                }
+
+            tagsFilter = queryDict.get('tags', [])
+            if len(tagsFilter) > 0:
+                query['tags'] = {
+                    '$all': tagsFilter
+                }
+            print(query)
         numToSkip = page * DatabaseConstants.PAGE_SIZE
         cursor: Cursor = cls.database.client[cls._TABLE_NAME].find(
             filter=query,

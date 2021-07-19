@@ -1,3 +1,5 @@
+@import "../../../assets/variables"
+
 mat-drawer
   width: 300px
 
@@ -11,9 +13,37 @@ mat-drawer-container
   display: flex
   flex-direction: row
   align-items: center
-  margin: 6px
+  margin: 6px 6px 0
 
   h1
     display: inline-block
     margin-right: 12px
     margin-bottom: 0
+
+.search-bar-container
+  margin-left: 12px
+  margin-right: 12px
+  flex-grow: 1
+
+  .search-text-input
+    padding-left: 6px
+
+  .search-wrapper
+    display: flex
+    flex-direction: row
+    align-items: center
+
+    mat-form-field
+      flex-grow: 1
+
+    .adv-search-icon
+      cursor: pointer
+      flex-grow: 0
+      margin-left: 6px
+      padding-bottom: 12px
+
+mat-paginator
+  background-color: #303030
+
+  .mat-paginator-container
+    justify-content: flex-start

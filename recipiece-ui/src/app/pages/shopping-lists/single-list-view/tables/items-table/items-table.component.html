@@ -1,28 +1,11 @@
-<ng-container *ngIf="reorderable">
-  <mat-table
-    matSort
-    cdkDropList
-    [cdkDropListData]="dataSource.data"
-    (cdkDropListDropped)="dropItemInTable($event)"
-    [dataSource]="dataSource"
-    class="items-table">
+<mat-table
+  matSort
+  cdkDropList
+  [cdkDropListData]="dataSource.data"
+  (cdkDropListDropped)="dropItemInTable($event)"
+  [dataSource]="dataSource"
+  class="items-table">
 
-    <ng-container *ngTemplateOutlet="cols"></ng-container>
-
-  </mat-table>
-</ng-container>
-<ng-container *ngIf="!reorderable">
-  <mat-table
-    matSort
-    [dataSource]="dataSource"
-    class="items-table">
-
-    <ng-container *ngTemplateOutlet="cols"></ng-container>
-
-  </mat-table>
-</ng-container>
-
-<ng-template #cols>
   <ng-container *ngIf="hasColumn(columnKeys.reorder)" matColumnDef="{{columnKeys.reorder}}">
     <mat-header-cell *matHeaderCellDef></mat-header-cell>
     <mat-cell *matCellDef="let item">
@@ -110,4 +93,5 @@
   <ng-container *ngIf="!reorderable">
     <mat-row *matRowDef="let row; columns: columns;"></mat-row>
   </ng-container>
-</ng-template>
+
+</mat-table>

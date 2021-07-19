@@ -4,6 +4,7 @@ import {Model} from '../model/model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/operators';
+import {nou} from '../../classes/utils';
 
 export class ApiConnector<T extends Model> {
   constructor(
@@ -61,10 +62,18 @@ export class ApiConnector<T extends Model> {
 
   public list(page: number, query?: any): Observable<(T | Partial<T>)[]> {
     const url = this.getFullUrl(`${this.baseUrl}/list/${this.storage.session._id}`);
-    return this.client.get(url, {
+
+    const options = {
       headers: this.getHeaders(),
-      params: query,
-    }).pipe(
+    };
+
+    if (!nou(query)) {
+      options['params'] = {
+        query: JSON.stringify(query)
+      };
+    }
+
+    return this.client.get(url, options).pipe(
       map((response: any) => {
         return response.data;
       }),

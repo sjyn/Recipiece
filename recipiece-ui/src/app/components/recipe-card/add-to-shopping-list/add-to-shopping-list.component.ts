@@ -72,6 +72,7 @@ export class AddToShoppingListComponent implements OnInit {
         if (!!ing.ingredient.unit) {
           notesString += ing.ingredient.unit;
         }
+        notesString = `${this.recipe.name}, ${notesString}`;
 
         const listItem: IShoppingListItem = {
           id: uuidv4(),

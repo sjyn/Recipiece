@@ -5,11 +5,16 @@ import {RecipeCardManagerService} from '../recipe-card/recipe-card-manager.servi
 import {ShoppingListService} from '../../api/shopping-list.service';
 import {take} from 'rxjs/operators';
 import {IShoppingList} from '../../api/model/shopping-list';
+import {RecipeBookService} from '../../api/recipe-book.service';
+import {IRecipeBook} from '../../api/model/recipe-book';
 
 @Component({
   selector: 'app-recipe-card-grid',
   templateUrl: './recipe-card-grid.component.html',
-  styleUrls: ['./recipe-card-grid.component.sass'],
+  styleUrls: [
+    './recipe-card-grid.component.sass',
+    './recipe-card-grid.component.mobile.sass'
+  ],
   providers: [
     RecipeCardManagerService,
   ],
@@ -26,6 +31,7 @@ export class RecipeCardGridComponent implements OnInit {
 
   constructor(
     private shoppingListApi: ShoppingListService,
+    private recipeBookApi: RecipeBookService,
     private recipeCardManager: RecipeCardManagerService,
   ) {
     this.viewed = new EventEmitter<IRecipe>();
@@ -39,6 +45,11 @@ export class RecipeCardGridComponent implements OnInit {
       .pipe(take(1))
       .subscribe((results) => {
         this.recipeCardManager.$shoppingLists.next(results as IShoppingList[]);
+      });
+    this.recipeBookApi.list(0)
+      .pipe(take(1))
+      .subscribe((results) => {
+        this.recipeCardManager.$recipeBooks.next(results as IRecipeBook[]);
       });
   }
 

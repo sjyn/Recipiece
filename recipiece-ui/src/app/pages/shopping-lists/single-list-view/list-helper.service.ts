@@ -54,7 +54,6 @@ export class ListHelperService {
   public save(): Observable<Partial<IShoppingList>> {
     return this.shoppingListService.save(this.shoppingList)
       .pipe(
-        debounceTime(1000),
         tap((list) => {
           this.$shoppingList.next(list);
         }),

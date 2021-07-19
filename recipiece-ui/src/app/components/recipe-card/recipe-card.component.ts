@@ -8,6 +8,7 @@ import {switchMap, take} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 import {AddToShoppingListCloseBundle, AddToShoppingListComponent} from './add-to-shopping-list/add-to-shopping-list.component';
 import {RecipeCardManagerService} from './recipe-card-manager.service';
+import {IRecipeBook} from '../../api/model/recipe-book';
 
 
 export interface RecipeCardIconClasses {
@@ -21,7 +22,9 @@ export interface RecipeCardIconClasses {
 @Component({
   selector: 'app-recipe-card',
   templateUrl: './recipe-card.component.html',
-  styleUrls: ['./recipe-card.component.sass'],
+  styleUrls: [
+    './recipe-card.component.sass',
+  ],
 })
 export class RecipeCardComponent implements OnInit {
   @Input() recipe: IRecipe;
@@ -77,9 +80,15 @@ export class RecipeCardComponent implements OnInit {
   }
 
   public linkPressed() {
-    const copyText = `${environment.serve.protocol}://${environment.host}:${environment.serve.port}/recipes/${this.recipe._id}`;
+    const copyText = `${environment.serve.protocol}://${environment.host}:${environment.serve.port}/recipe/${this.recipe._id}`;
     this.clipboard.copy(copyText);
     this.linked.emit(this.recipe);
+  }
+
+  public addToRecipeBook(book: IRecipeBook, recipeId: string) {
+    this.recipeCardManager.addRecipeToRecipeBook(book, recipeId)
+      .pipe(take(1))
+      .subscribe();
   }
 
   public addToShoppingList(list: IShoppingList) {

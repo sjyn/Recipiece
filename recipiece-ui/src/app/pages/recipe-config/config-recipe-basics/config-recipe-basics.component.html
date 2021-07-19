@@ -18,6 +18,27 @@
   <mat-checkbox [(ngModel)]="recipe.private">
     This recipe is private, and cannot be seen by anyone other than me
   </mat-checkbox>
+
+  <mat-form-field>
+    <mat-label>Tags</mat-label>
+    <mat-chip-list #recipeLabels>
+      <mat-chip
+        [selectable]="false"
+        [removable]="true"
+        (removed)="removeTag(tag)"
+        *ngFor="let tag of recipe.tags">
+        {{ tag }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Add tag"
+        [matChipInputFor]="recipeLabels"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="true"
+        (matChipInputTokenEnd)="addTag($event)">
+    </mat-chip-list>
+  </mat-form-field>
+
   <div class="advanced-settings-accordion">
     <mat-accordion>
       <mat-expansion-panel>

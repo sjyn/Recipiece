@@ -31,7 +31,6 @@ export class SingleListViewComponent implements OnInit {
       )
       .subscribe((fetchedList) => {
         this.listHelper.shoppingList = fetchedList;
-        this.router.navigate(['all'], {relativeTo: this.activatedRoute});
       });
   }
 

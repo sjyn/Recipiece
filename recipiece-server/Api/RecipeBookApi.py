@@ -16,7 +16,7 @@ class RecipeBookApi(BaseApi.UserOwnedApi[Models.RecipeBook]):
         return super().create(entity, userId)
 
     @classmethod
-    def loadRecipesForBook(cls, bookId: str, page: int) -> [Models.Recipe]:
+    def loadRecipesForBook(cls, bookId: str, page: int, query: dict = None) -> [Models.Recipe]:
         recipeBook = cls.getById(bookId)
         objIds = [ObjectId(entityId) for entityId in recipeBook.get('recipes')]
         skipped = DatabaseConstants.PAGE_SIZE * page
@@ -26,4 +26,3 @@ class RecipeBookApi(BaseApi.UserOwnedApi[Models.RecipeBook]):
             limit=DatabaseConstants.PAGE_SIZE
         ).sort('created')
         return list(cursor)
-

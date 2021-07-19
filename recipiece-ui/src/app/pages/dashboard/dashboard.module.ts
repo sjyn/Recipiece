@@ -22,6 +22,8 @@ import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {DeleteRecipeBookModalComponent} from './modals/delete-recipe-book-modal/delete-recipe-book-modal.component';
 import {RecipeCardGridModule} from '../../components/recipe-card-grid/recipe-card-grid.module';
+import {AdvancedSearchModalComponent} from './modals/advanced-search-modal/advanced-search-modal.component';
+import {MatChipsModule} from '@angular/material/chips';
 
 
 @NgModule({
@@ -31,6 +33,7 @@ import {RecipeCardGridModule} from '../../components/recipe-card-grid/recipe-car
     DeleteRecipeModalComponent,
     CreateRecipeBookModalComponent,
     DeleteRecipeBookModalComponent,
+    AdvancedSearchModalComponent,
   ],
   imports: [
     CommonModule,
@@ -49,6 +52,7 @@ import {RecipeCardGridModule} from '../../components/recipe-card-grid/recipe-car
     FormsModule,
     MatInputModule,
     RecipeCardGridModule,
+    MatChipsModule,
   ],
   providers: [
     DashboardStateService,
@@ -57,6 +61,7 @@ import {RecipeCardGridModule} from '../../components/recipe-card-grid/recipe-car
     DeleteRecipeModalComponent,
     CreateRecipeBookModalComponent,
     DeleteRecipeBookModalComponent,
+    AdvancedSearchModalComponent,
   ],
 })
 export class DashboardModule {

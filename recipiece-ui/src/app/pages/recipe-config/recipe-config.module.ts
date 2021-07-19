@@ -21,6 +21,7 @@ import {LinkRecipeModalComponent} from './modals/link-recipe-modal/link-recipe-m
 import {LinkRecipeService} from './services/link-recipe.service';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ConfigRecipeEquipmentComponent } from './config-recipe-equipment/config-recipe-equipment.component';
+import {MatChipsModule} from '@angular/material/chips';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { ConfigRecipeEquipmentComponent } from './config-recipe-equipment/config
     MatSelectModule,
     MatExpansionModule,
     MatDialogModule,
+    MatChipsModule,
   ],
   providers: [
     ConfigManagerService,

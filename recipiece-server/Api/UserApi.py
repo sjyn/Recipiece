@@ -66,7 +66,8 @@ class UserApi(BaseApi.BaseApi[Models.User]):
                 # generate a session for the user
                 sessionDict = Models.Session(
                     owner=userLookup['_id'],
-                    created=int(time.time())
+                    created=int(time.time()),
+                    sessionType='login',
                 )
                 sessionDict = SessionApi.SessionApi.create(sessionDict, userLookup['_id'])
                 return SessionApi.SessionApi.serializeSession(sessionDict), userLookup['_id']

@@ -1,6 +1,6 @@
 <ng-container *ngIf="($sortedRecipeMap | async) as sortedRecipes">
   <ng-container *ngFor="let sortedRecipeId of getKeys(sortedRecipes)">
-    <mat-expansion-panel>
+    <mat-expansion-panel expanded="{{ true }}" class="expansion-panel">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <ng-container *ngIf="sortedRecipeId !== UNCAT_KEY">
@@ -10,13 +10,13 @@
             Uncategorized
           </ng-container>
         </mat-panel-title>
-
-        <!-- Table for these recipe items -->
-        <mat-table [dataSource]="sortedRecipes[sortedRecipeId]">
-
-        </mat-table>
-
       </mat-expansion-panel-header>
+      <app-items-table
+        [columns]="columns"
+        [dataSource]="sortedRecipes[sortedRecipeId]"
+        (dataSourceChange)="dataSourceChanged($event)"
+        [reorderable]="false">
+      </app-items-table>
     </mat-expansion-panel>
   </ng-container>
 </ng-container>

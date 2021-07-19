@@ -32,3 +32,4 @@ class Recipe(BaseModel.UserOwnedModel, total=False):
     ingredients: List[RecipeIngredient]
     links: Optional[List[str]]
     advanced: Optional[RecipeAdvancedOptions]
+    tags: List[str]

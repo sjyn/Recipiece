@@ -5,19 +5,44 @@
   <mat-drawer-content>
     <div class="drawer-content-container">
       <div class="header-wrapper">
+        <!--        <ng-container *ngIf="!dashboardState.loading">-->
         <ng-container *ngIf="!!dashboardState.selectedBook">
           <h1>{{ dashboardState.selectedBook.name }}</h1>
         </ng-container>
         <ng-container *ngIf="dashboardState.selectedBook === undefined">
           <h1>All Your Recipes</h1>
         </ng-container>
-        <ng-container *ngIf="dashboardState.loading">
-          <mat-spinner diameter="20"></mat-spinner>
-        </ng-container>
+        <div class="search-bar-container">
+          <div class="search-wrapper">
+            <mat-form-field>
+              <mat-icon matPrefix>search</mat-icon>
+              <input
+                [ngModel]="dashboardState.searchRecipeName"
+                (ngModelChange)="dashboardState.searchRecipeNameChanged($event)"
+                class="search-text-input"
+                matInput
+                type="text"/>
+            </mat-form-field>
+            <mat-icon
+              (click)="openAdvancedSearch()"
+              class="adv-search-icon">
+              settings_suggest
+            </mat-icon>
+            <mat-icon
+              class="adv-search-icon"
+              (click)="dashboardState.clearSearch()"
+              *ngIf="dashboardState.filtering">
+              clear
+            </mat-icon>
+          </div>
+        </div>
       </div>
-      <span *ngIf="!!dashboardState.selectedBook">{{ dashboardState.selectedBook.description }}</span>
-
-      <ng-container *ngIf="!dashboardState.loading">
+      <span
+        class="header-wrapper"
+        *ngIf="!!dashboardState.selectedBook">
+        {{ dashboardState.selectedBook.description }}
+      </span>
+      <ng-container *ngIf="(dashboardState.recipes | async) as recipes">
         <app-recipe-card-grid
           [manageable]="true"
           [draggable]="true"
@@ -26,7 +51,7 @@
           (copied)="recipeCopied($event)"
           (deleted)="recipeDeleted($event)"
           (viewed)="recipeViewed($event)"
-          [recipes]="dashboardState.recipes">
+          [recipes]="recipes">
         </app-recipe-card-grid>
       </ng-container>
     </div>

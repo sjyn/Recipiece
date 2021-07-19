@@ -25,14 +25,19 @@ class SessionApi(BaseApi.BaseApi[Models.Session]):
     def deserializeSession(cls, token: str) -> Models.Session:
         decodedSession = base64.b64decode(token.encode('utf-8')).decode('utf-8')
         parts = decodedSession.split('.')
-        return {
-            '_id': parts[0],
-            'owner': parts[1],
-            'created': int(parts[2])
-        }
+        if len(parts) == 3:
+            parts.append('login')
+        # noinspection PyTypeChecker
+        return Models.Session(
+            _id=parts[0],
+            owner=parts[1],
+            created=int(parts[2]),
+            sessionType=parts[3],
+        )
 
     @classmethod
     def serializeSession(cls, sessionDict: Models.Session) -> str:
         utcCreated = int(sessionDict['created'])
-        valToEncode = f"{sessionDict['_id']}.{sessionDict['owner']}.{utcCreated}".encode('utf-8')
+        valToEncode = f"{sessionDict['_id']}.{sessionDict['owner']}.{utcCreated}.{sessionDict['sessionType']}"\
+            .encode('utf-8')
         return base64.b64encode(valToEncode).decode('utf-8')

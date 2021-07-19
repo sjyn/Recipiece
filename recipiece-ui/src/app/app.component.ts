@@ -18,7 +18,6 @@ export class AppComponent {
   private readonly CREATE_ID = 1;
 
   readonly actions: (MatFabMenu & {route: string})[] = [
-    {icon: 'info', id: this.INFO_ID, tooltip: 'About', tooltipPosition: 'left', route: ''},
     {icon: 'account_circle', id: this.ACCOUNT_ID, tooltip: 'Account', tooltipPosition: 'left', route: 'profile'},
     {icon: 'shopping_cart', id: this.SHOPPING_ID, tooltip: 'Shopping', tooltipPosition: 'left', route: 'shopping-lists'},
     {icon: 'create', id: this.CREATE_ID, tooltip: 'Create Recipe', tooltipPosition: 'left', route: 'config'},

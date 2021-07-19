@@ -103,6 +103,7 @@ export class RecipeConfigComponent implements OnInit {
       advanced: {
         highAltitude: false,
       },
+      tags: [],
     };
   }
 

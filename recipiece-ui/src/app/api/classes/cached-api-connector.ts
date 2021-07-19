@@ -1,9 +1,7 @@
 import {ApiConnector} from './api-connector';
 import {Model} from '../model/model';
 import {Observable, of} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
-import {IRecipe} from '../model/recipe';
-import {environment} from '../../../environments/environment';
+import {tap} from 'rxjs/operators';
 import {StorageService} from '../../services/storage.service';
 import {HttpClient} from '@angular/common/http';
 
@@ -68,37 +66,41 @@ export class CachedApiConnector<T extends Model> extends ApiConnector<T> {
       );
   }
 
-  public list(page: number, query?: any): Observable<(Partial<T> | T)[]> {
-    if (!!query) {
-      // client side caching is gonna be hard, so hit the server instead
-      // @TODO -- do we want to put the results into the cache?
-      return super.list(page, query);
-    }
-    const lowerSlice = page * this.PAGE_SIZE;
-    const upperSlice = (page + 1) * this.PAGE_SIZE;
-    const keysSlice = this.fetchedPages.slice(lowerSlice, upperSlice);
-
-    if (keysSlice.length === 0) {
-      return super.list(page, query)
-        .pipe(
-          tap((results) => {
-            results.forEach((entity) => {
-              // put the keys into the cache
-              this.cache[entity._id.toString()] = entity;
-            });
-            // sparsely populate the keys
-            for (let i = 0; i < Math.min(results.length, this.PAGE_SIZE); i++) {
-              this.fetchedPages[lowerSlice + i] = results[i]._id;
-            }
-          }),
-        );
-    } else {
-      const entities = keysSlice.map((entityId) => {
-        return this.cache[entityId];
-      });
-      return of(entities);
-    }
-  }
+  // public list(page: number, query?: any): Observable<(Partial<T> | T)[]> {
+  //   if (!!query) {
+  //     // client side caching is gonna be hard, so hit the server instead
+  //     // @TODO -- do we want to put the results into the cache?
+  //     return super.list(page, query);
+  //   }
+  //   const lowerSlice = page * this.PAGE_SIZE;
+  //   const upperSlice = (page + 1) * this.PAGE_SIZE;
+  //   const keysSlice = this.fetchedPages.slice(lowerSlice, upperSlice);
+  //
+  //   if (keysSlice.length === 0) {
+  //     return this.regularFetch(page, query, lowerSlice)
+  //   } else {
+  //     const entities = keysSlice.map((entityId) => {
+  //       return this.cache[entityId];
+  //     });
+  //     return of(entities);
+  //   }
+  // }
+  //
+  // private regularFetch(page, query, lowerSlice) {
+  //   return super.list(page, query)
+  //     .pipe(
+  //       tap((results) => {
+  //         results.forEach((entity) => {
+  //           // put the keys into the cache
+  //           this.cache[entity._id.toString()] = entity;
+  //         });
+  //         // sparsely populate the keys
+  //         for (let i = 0; i < Math.min(results.length, this.PAGE_SIZE); i++) {
+  //           this.fetchedPages[lowerSlice + i] = results[i]._id;
+  //         }
+  //       }),
+  //     );
+  // }
 
   protected cacheEntity(entity: Partial<T>): boolean {
     return false;

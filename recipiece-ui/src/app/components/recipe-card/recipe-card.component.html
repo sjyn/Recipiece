@@ -25,7 +25,18 @@
 </mat-card>
 
 <mat-menu #moreOptions>
-  <button mat-menu-item [matMenuTriggerFor]="shoppingLists">Add to List</button>
+  <button
+    [disabled]="((recipeCardManager.$shoppingLists | async)?.length || 0) === 0"
+    mat-menu-item
+    [matMenuTriggerFor]="shoppingLists">
+    Add to List
+  </button>
+  <button
+    [disabled]="((recipeCardManager.getFilteredRecipeBooks(recipe._id) | async)?.length || 0) === 0"
+    mat-menu-item
+    [matMenuTriggerFor]="recipeBooks">
+    Add to Book
+  </button>
   <button mat-menu-item [disabled]="recipe.private" (click)="linkPressed()">Copy Link</button>
 </mat-menu>
 
@@ -34,11 +45,29 @@
     <mat-spinner diameter="25"></mat-spinner>
   </div>
   <ng-container *ngIf="(recipeCardManager.$shoppingLists | async) as lists">
-    <button
-      mat-menu-item
-      (click)="addToShoppingList(shoppingList)"
-      *ngFor="let shoppingList of lists">
-      {{ shoppingList.name }}
-    </button>
+    <ng-container *ngIf="lists.length >0">
+      <button
+        mat-menu-item
+        (click)="addToShoppingList(shoppingList)"
+        *ngFor="let shoppingList of lists">
+        {{ shoppingList.name }}
+      </button>
+    </ng-container>
+  </ng-container>
+</mat-menu>
+
+<mat-menu #recipeBooks>
+  <div class="loading-lists" *ngIf="!(recipeCardManager.$recipeBooks | async)">
+    <mat-spinner diameter="25"></mat-spinner>
+  </div>
+  <ng-container *ngIf="(recipeCardManager.getFilteredRecipeBooks(recipe._id) | async) as lists">
+    <ng-container *ngIf="lists.length > 0">
+      <button
+        mat-menu-item
+        (click)="addToRecipeBook(recipeBook, recipe._id)"
+        *ngFor="let recipeBook of lists">
+        {{ recipeBook.name }}
+      </button>
+    </ng-container>
   </ng-container>
 </mat-menu>

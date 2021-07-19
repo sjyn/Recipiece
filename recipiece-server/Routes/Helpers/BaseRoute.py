@@ -1,3 +1,4 @@
+import json
 import urllib
 from typing import Type, Union
 
@@ -14,7 +15,11 @@ class BaseRoute(FlaskView):
 
     @property
     def userId(self) -> str:
-        return flask.request.environ.get('session')['owner']
+        session = flask.request.environ.get('session')
+        if session is not None:
+            return session['owner']
+
+        # return flask.request.environ.get('session', {'owner': None})['owner']
 
     def __init__(self, api: __apiType, requireAuth=True, checkOwner=True):
         self.api = api
@@ -23,7 +28,7 @@ class BaseRoute(FlaskView):
 
     def _checkOwnership(self, ownedEntity: dict):
         if self.userId != ownedEntity['owner']:
-            raise ApiExceptions.UnauthorizedException
+            raise ApiExceptions.UnauthorizedException()
 
     def makeResponse(self, data: dict, currentPage=None, nextPage=None):
         response = {'data': data}
@@ -114,7 +119,7 @@ class ListableRoute(BaseRoute):
 
         queryDict = flask.request.args.get('query', None)
         if queryDict is not None:
-            queryDict = dict(urllib.parse.parse_qsl(queryDict))
+            queryDict = json.loads(queryDict)
         if self.requireAuth:
             response = self.__listForUserAuth(userId, requestedPage, queryDict)
         else:

@@ -9,6 +9,7 @@ export interface IRecipe extends Model {
   steps: IRecipeStep[];
   ingredients: IRecipeIngredient[];
   equipment?: IEquipment[],
+  tags: string[];
   links?: string[];
   owner?: string;
   advanced: IRecipeAdvancedOptions;

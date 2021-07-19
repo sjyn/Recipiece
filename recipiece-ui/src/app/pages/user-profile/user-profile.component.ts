@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {DeleteAccountModalComponent} from './modals/delete-account-modal/delete-account-modal.component';
 import {of} from 'rxjs';
+import {nou} from '../../classes/utils';
 
 @Component({
   selector: 'app-user-profile',
@@ -74,8 +75,10 @@ export class UserProfileComponent implements OnInit {
           }
         }),
       )
-      .subscribe(() => {
-        this.router.navigate(['login']);
+      .subscribe((deleted) => {
+        if(!nou(deleted)) {
+          this.router.navigate(['login']);
+        }
       }, (err) => {
 
       });

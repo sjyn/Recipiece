@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {IRecipe} from '../../../api/model/recipe';
 
 @Component({
   selector: 'app-config-recipe-equipment',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./config-recipe-equipment.component.sass']
 })
 export class ConfigRecipeEquipmentComponent implements OnInit {
+  @Input() public recipe: IRecipe;
 
   constructor() { }
 

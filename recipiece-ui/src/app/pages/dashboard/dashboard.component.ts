@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UiGlobalsService} from '../../services/ui-globals.service';
-import {DashboardStateService} from './dashboard-state.service';
+import {DashboardStateService, RecipeSearchBundle} from './dashboard-state.service';
 import {IRecipe} from '../../api/model/recipe';
 import {DeleteRecipeModalComponent} from './modals/delete-recipe-modal/delete-recipe-modal.component';
 import {take} from 'rxjs/operators';
@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {RecipeCardIconClasses} from '../../components/recipe-card/recipe-card.component';
+import {AdvancedSearchModalComponent, AdvanceSearchConfig} from './modals/advanced-search-modal/advanced-search-modal.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,6 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.uiGlobals.showDrawer = false;
+    this.dashboardState.clearSearch();
   }
 
   public recipeEdited(recipe: IRecipe) {
@@ -80,6 +82,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.snackbar.open(`A link to the recipe was copied to your clipboard!`, 'OK', {
       duration: 2000,
     });
+  }
+
+  public openAdvancedSearch() {
+    const dialogRef = this.modalService.open(AdvancedSearchModalComponent, {
+      width: '400px',
+    });
+    dialogRef.afterClosed()
+      .pipe(take(1))
+      .subscribe((closed: AdvanceSearchConfig) => {
+        if (closed.search) {
+          const recipeQuery: RecipeSearchBundle = {
+            name: closed.name,
+            tags: closed.tags,
+          }
+          this.dashboardState.searchRecipeParamsChanged(recipeQuery);
+        }
+      });
   }
 
 }

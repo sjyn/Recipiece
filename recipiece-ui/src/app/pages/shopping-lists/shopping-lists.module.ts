@@ -21,7 +21,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {RecipeSortItemsComponent} from './single-list-view/recipe-sort/recipe-sort-items.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { ItemsTableComponent } from './single-list-view/tables/items-table/items-table.component';
+import {ItemsTableComponent} from './single-list-view/tables/items-table/items-table.component';
+import {ShareListModalComponent} from './single-list-view/share-list-modal/share-list-modal.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { ItemsTableComponent } from './single-list-view/tables/items-table/items
     CategoryItemsComponent,
     RecipeSortItemsComponent,
     ItemsTableComponent,
+    ShareListModalComponent,
   ],
   imports: [
     CommonModule,
@@ -50,6 +52,9 @@ import { ItemsTableComponent } from './single-list-view/tables/items-table/items
     MatMenuModule,
     DragDropModule,
     MatExpansionModule,
+  ],
+  entryComponents: [
+    ShareListModalComponent,
   ],
 })
 export class ShoppingListsModule {

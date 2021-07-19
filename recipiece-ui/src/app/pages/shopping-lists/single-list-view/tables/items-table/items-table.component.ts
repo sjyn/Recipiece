@@ -81,10 +81,12 @@ export class ItemsTableComponent implements OnInit {
 
   public dropItemInTable(event: CdkDragDrop<IShoppingListItem[]>) {
     const prevIndex = this.dataSource.data.findIndex((d) => d === event.item.data);
-    moveItemInArray(this.dataSource.data, prevIndex, event.currentIndex);
-    this.dataSource.data.forEach((item, idx) => {
+    const dataToMove = [...this.dataSource.data];
+    moveItemInArray(dataToMove, prevIndex, event.currentIndex);
+    dataToMove.forEach((item, idx) => {
       item.ordinal = idx;
     });
+    this.dataSource.data = dataToMove;
     this.dataSourceChange.emit(this.dataSource);
     // this.listHelper.setItems(this.list);
   }
