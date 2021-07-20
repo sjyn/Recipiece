@@ -22,8 +22,8 @@
             [(ngModel)]="ingredientWrapper.selected">
           </mat-checkbox>
           <span class="ingredient-name">{{ingredientWrapper.ingredient.name}}</span>
-          <span class="ingredient-amount">{{ingredientWrapper.ingredient.amount * scale}}</span>
-          <span class="ingredient-amount" *ngIf="!!ingredientWrapper.ingredient.unit">
+          <span class="ingredient-amount">{{ getIngredientAmountDisplay(ingredientWrapper) }}</span>
+          <span class="ingredient-amount ing-unit" *ngIf="!!ingredientWrapper.ingredient.unit">
             {{ingredientWrapper.ingredient.unit}}
           </span>
         </mat-list-item>

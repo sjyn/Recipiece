@@ -35,6 +35,7 @@
       </mat-form-field>
       <mat-form-field>
         <mat-select [(ngModel)]="step.length.unit" [name]="'step-len-unit-' + index">
+          <mat-option value="s">{{ getDisplayForOption(index, 's') }}</mat-option>
           <mat-option value="m">{{ getDisplayForOption(index, 'm') }}</mat-option>
           <mat-option value="h">{{ getDisplayForOption(index, 'h') }}</mat-option>
           <mat-option value="d">{{ getDisplayForOption(index, 'd') }}</mat-option>

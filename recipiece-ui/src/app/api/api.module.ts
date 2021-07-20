@@ -5,6 +5,7 @@ import {UserService} from './user.service';
 import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {ShoppingListService} from './shopping-list.service';
+import {ConversionService} from './conversion.service';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import {ShoppingListService} from './shopping-list.service';
     RecipeBookService,
     UserService,
     ShoppingListService,
+    ConversionService,
   ],
 })
 export class ApiModule {

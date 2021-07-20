@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Fetch Recipe from URL</h1>
+<div mat-dialog-content class="dialog-content">
+  <mat-form-field appearance="fill">
+    <mat-label>URL</mat-label>
+    <input
+      matInput
+      required
+      name="recipe-url"
+      [(ngModel)]="url"/>
+  </mat-form-field>
+  <div *ngIf="showCouldNotLoad">
+
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button
+    (click)="parseUrl()"
+    [disabled]="disableFetchButton"
+    mat-button
+    color="primary">
+    Fetch Recipe
+  </button>
+</div>
+

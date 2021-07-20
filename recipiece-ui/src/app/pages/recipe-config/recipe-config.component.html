@@ -1,15 +1,23 @@
 <div class="config-container" *ngIf="!loading">
-  <h1>{{ headerText }}</h1>
-  <div class="error-container" *ngIf="!!errorText">
-    {{ errorText }}
+  <div class="header-container">
+    <h1>{{ headerText }}</h1>
+    <button (click)="openFromLinkModal()" mat-icon-button *ngIf="!editing">
+      <mat-icon>link</mat-icon>
+    </button>
   </div>
-  <button
-    (click)="saveRecipe()"
-    mat-stroked-button
-    color="primary"
-    *ngIf="errorText === undefined">
-    Save Recipe
-  </button>
+  <div class="save-or-error-container">
+    <div class="error-container" *ngIf="!!errorText">
+      {{ errorText }}
+    </div>
+    <button
+      class="save-recipe-button"
+      (click)="saveRecipe()"
+      mat-button
+      color="primary"
+      *ngIf="errorText === undefined">
+      Save Recipe
+    </button>
+  </div>
   <mat-tab-group animationDuration="0ms">
     <mat-tab label="Basics">
       <ng-container *ngIf="!loading">

@@ -40,12 +40,4 @@ export class ConfigRecipeBasicsComponent implements OnInit {
     this.recipe.tags = this.recipe.tags.filter((t) => t !== tag);
   }
 
-  // removeTag(fruit: Fruit): void {
-  //   const index = this.fruits.indexOf(fruit);
-  //
-  //   if (index >= 0) {
-  //     this.fruits.splice(index, 1);
-  //   }
-  // }
-
 }

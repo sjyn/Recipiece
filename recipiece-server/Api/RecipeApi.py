@@ -1,10 +1,13 @@
 import re
 import time
 
+import ingreedypy
+import recipe_scrapers
 from pymongo.cursor import Cursor
 
 from Api import BaseApi
 from Api.Exceptions import ApiExceptions
+from Api.Helpers import RecipeFormatter
 from Database import DatabaseConstants, Models
 from Database.Database import IdType
 
@@ -40,7 +43,6 @@ class RecipeApi(BaseApi.UserOwnedApi[Models.Recipe]):
                 query['tags'] = {
                     '$all': tagsFilter
                 }
-            print(query)
         numToSkip = page * DatabaseConstants.PAGE_SIZE
         cursor: Cursor = cls.database.client[cls._TABLE_NAME].find(
             filter=query,
@@ -48,3 +50,12 @@ class RecipeApi(BaseApi.UserOwnedApi[Models.Recipe]):
             limit=DatabaseConstants.PAGE_SIZE
         ).sort('created')
         return list(cursor)
+
+    @classmethod
+    def generateFromUrl(cls, url: str, userId: str) -> Models.Recipe:
+        try:
+            return RecipeFormatter.RecipeFormatter.parseScraperIntoRecipe(url, userId)
+        except recipe_scrapers.NoSchemaFoundInWildMode:
+            raise ApiExceptions.UnprocessableEntityException()
+
+

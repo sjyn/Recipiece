@@ -15,7 +15,7 @@ export interface IRecipe extends Model {
   advanced: IRecipeAdvancedOptions;
 }
 
-type StepLenUnit = 'm' | 'h' | 'd' | 'w';
+type StepLenUnit = 'm' | 'h' | 'd' | 'w' | 's';
 
 
 export interface IRecipeAdvancedOptions {

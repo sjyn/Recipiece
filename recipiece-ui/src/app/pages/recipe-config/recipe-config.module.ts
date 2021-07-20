@@ -20,8 +20,9 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {LinkRecipeModalComponent} from './modals/link-recipe-modal/link-recipe-modal.component';
 import {LinkRecipeService} from './services/link-recipe.service';
 import {MatDialogModule} from '@angular/material/dialog';
-import { ConfigRecipeEquipmentComponent } from './config-recipe-equipment/config-recipe-equipment.component';
+import {ConfigRecipeEquipmentComponent} from './config-recipe-equipment/config-recipe-equipment.component';
 import {MatChipsModule} from '@angular/material/chips';
+import {FromLinkModalComponent} from './modals/from-link-modal/from-link-modal.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import {MatChipsModule} from '@angular/material/chips';
     ConfigRecipeStepsComponent,
     LinkRecipeModalComponent,
     ConfigRecipeEquipmentComponent,
+    FromLinkModalComponent,
   ],
   imports: [
     CommonModule,
@@ -55,6 +57,7 @@ import {MatChipsModule} from '@angular/material/chips';
   ],
   entryComponents: [
     LinkRecipeModalComponent,
+    FromLinkModalComponent,
   ],
 })
 export class RecipeConfigModule {

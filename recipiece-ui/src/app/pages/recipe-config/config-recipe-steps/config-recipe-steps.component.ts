@@ -32,6 +32,11 @@ export class ConfigRecipeStepsComponent implements OnInit {
       plural: 'Weeks',
       max: 52,
     },
+    s: {
+      singular: 'Second',
+      plural: 'Seconds',
+      max: 60,
+    }
   };
 
   constructor() {

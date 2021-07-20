@@ -3,6 +3,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {IShoppingList, IShoppingListItem} from '../../../api/model/shopping-list';
 import {IRecipe, IRecipeIngredient} from '../../../api/model/recipe';
 import {v4 as uuidv4} from 'uuid';
+import {fractionToDecimal} from '../../../classes/utils';
+import Fraction from 'fraction.js';
 
 export interface AddToShoppingListDataBundle {
   list: IShoppingList,
@@ -14,7 +16,7 @@ export interface AddToShoppingListCloseBundle {
   saved: boolean;
 }
 
-interface SelectableIngredients {
+interface SelectableIngredient {
   ingredient: IRecipeIngredient;
   selected: boolean;
 }
@@ -28,12 +30,16 @@ export class AddToShoppingListComponent implements OnInit {
   public shoppingList: IShoppingList;
   public recipe: IRecipe;
   public scale: number;
-  public ingredients: SelectableIngredients[];
+  public ingredients: SelectableIngredient[];
 
   constructor(
     private dialogRef: MatDialogRef<AddToShoppingListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddToShoppingListDataBundle,
   ) {
+  }
+
+  public getIngredientAmountDisplay(ingredient: SelectableIngredient): string {
+    return new Fraction(ingredient.ingredient.amount).mul(this.scale).toFraction();
   }
 
   ngOnInit(): void {
@@ -68,7 +74,7 @@ export class AddToShoppingListComponent implements OnInit {
     this.ingredients
       .filter((ing) => ing.selected)
       .forEach((ing) => {
-        let notesString = (+ing.ingredient.amount * this.scale).toString();
+        let notesString = this.getIngredientAmountDisplay(ing);
         if (!!ing.ingredient.unit) {
           notesString += ing.ingredient.unit;
         }

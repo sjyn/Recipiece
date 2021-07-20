@@ -9,6 +9,9 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -24,6 +27,9 @@ import {MatIconModule} from '@angular/material/icon';
     MatListModule,
     MatButtonModule,
     MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
   ],
 })
 export class RecipeViewModule {

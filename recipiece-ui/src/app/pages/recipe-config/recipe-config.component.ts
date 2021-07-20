@@ -4,6 +4,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {switchMap, take} from 'rxjs/operators';
 import {RecipeService} from '../../api/recipe.service';
 import {of} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {FromLinkModalComponent, FromLinkModalResult} from './modals/from-link-modal/from-link-modal.component';
+import {nou} from '../../classes/utils';
 
 @Component({
   selector: 'app-recipe-config',
@@ -61,6 +64,7 @@ export class RecipeConfigComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private recipeService: RecipeService,
+    private dialogService: MatDialog,
   ) {
   }
 
@@ -90,6 +94,19 @@ export class RecipeConfigComponent implements OnInit {
       .pipe(take(1))
       .subscribe(() => {
         this.router.navigate(['dashboard']);
+      });
+  }
+
+  public openFromLinkModal() {
+    const dialogRef = this.dialogService.open(FromLinkModalComponent, {
+      width: '500px',
+    });
+    dialogRef.afterClosed()
+      .pipe(take(1))
+      .subscribe((result: FromLinkModalResult) => {
+        if (!nou(result.recipe)) {
+          this.recipe = result.recipe;
+        }
       });
   }
 

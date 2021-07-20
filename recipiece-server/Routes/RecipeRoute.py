@@ -2,6 +2,8 @@ import flask
 from flask_classful import route
 
 from Api import RecipeApi
+from Api.Exceptions import ApiExceptions
+from Routes.AuthMiddleware import authorized
 from Routes.Helpers import BaseRoute
 
 
@@ -17,6 +19,14 @@ class RecipeRoute(
     @route('/<entityId>', methods=['GET'])
     def getById(self, entityId: str):
         return self.makeResponse(self._getById(entityId))
+
+    @route('/from-url', methods=['POST'])
+    @authorized
+    def parseFromUrl(self):
+        recipeUrl = flask.request.json.get('url', None)
+        if recipeUrl is None:
+            raise ApiExceptions.BadRequestException()
+        return self.makeResponse(RecipeApi.RecipeApi.generateFromUrl(recipeUrl, self.userId))
 
     def _getById(self, entityId: str) -> dict:
         recipe = self.api.getById(entityId)
